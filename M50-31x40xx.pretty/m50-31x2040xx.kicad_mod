@@ -1,0 +1,8 @@
+(module m50-31x2040xx (layer F.Cu) (tedit 56DD2A1E)
+  (fp_text reference REF** (at 0 0.5) (layer F.SilkS)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (fp_text value m50-31x2040xx (at 0 -0.5) (layer F.Fab)
+    (effects (font (size 1 1) (thickness 0.15)))
+  )
+)

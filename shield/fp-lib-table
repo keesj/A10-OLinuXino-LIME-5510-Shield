@@ -1,0 +1,6 @@
+(fp_lib_table
+  (lib (name A10_OLIMEXINO_LIME_SHIELD_1)(type Legacy)(uri "$(KIPRJMOD)/A10_OLIMEXINO_LIME_SHIELD_1.mod")(options "")(descr ""))
+  (lib (name lcd5110)(type KiCad)(uri /home/keesj/projects/A10-OLinuXino-LIME-5510-Shield/lcd5110.pretty)(options "")(descr ""))
+  (lib (name M50-31x40xx)(type KiCad)(uri /home/keesj/projects/A10-OLinuXino-LIME-5510-Shield/M50-31x40xx.pretty)(options "")(descr ""))
+  (lib (name button)(type KiCad)(uri /home/keesj/projects/A10-OLinuXino-LIME-5510-Shield/button.pretty)(options "")(descr ""))
+)

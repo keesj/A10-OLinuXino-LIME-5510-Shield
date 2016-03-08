@@ -1,5 +1,5 @@
-update=13/02/2014 16:06:37
-last_client=eeschema
+update=Mon 07 Mar 2016 21:52:48 CET
+last_client=kicad
 [pcbnew]
 version=1
 LastNetListRead=
@@ -25,11 +25,7 @@ LibName1=A10_OLIMEXINO_LIME_SHIELD_1
 [eeschema]
 version=1
 LibDir=
-NetFmtName=
-RptD_X=0
-RptD_Y=100
-RptLab=1
-LabSize=60
 [eeschema/libraries]
 LibName1=A10_OLIMEXINO_LIME_SHIELD_1
 LibName2=power
+LibName3=device
