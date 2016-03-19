@@ -1,5 +1,7 @@
 // helper module for drawing rectangles with rounded borders
 //
+// (c) 2016 Kees Jongenburger: Licence of this file only applies
+// to this file and does not infect other parts of the design.
 // (c) 2013 Felipe C. da S. Sanches <fsanches@metamaquina.com.br>
 // Lincensed under the terms of the GNU General Public License
 // version 3 (or later).
