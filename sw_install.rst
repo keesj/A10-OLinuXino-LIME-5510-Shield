@@ -213,6 +213,62 @@ Hence::
 
  Enable SPIDEV  (device drivers -> spi -> spidev)
 
+and DTS changes::
+
+	diff --git a/arch/arm/boot/dts/sun4i-a10-olinuxino-lime.dts b/arch/arm/boot/dts/sun4i-a10-olinuxino-lime.dts
+	index b350448..65c94e9 100644
+	--- a/arch/arm/boot/dts/sun4i-a10-olinuxino-lime.dts
+	+++ b/arch/arm/boot/dts/sun4i-a10-olinuxino-lime.dts
+	@@ -220,6 +220,29 @@
+		status = "okay";
+	 };
+	 
+	+&spi0 {
+	+       pinctrl-names = "default";
+	+       pinctrl-0 = <&spi0_pins_a>,
+	+                   <&spi0_cs0_pins_a>;
+	+       status = "okay";
+	+};
+	+
+	+&spi2 {
+	+       pinctrl-names = "default";
+	+       pinctrl-0 = <&spi2_pins_a>,
+	+                   <&spi2_cs0_pins_a>;
+	+       status = "okay";
+	+       spidev0: spidev@1 {
+	+               compatible = "spidev";
+	+               reg = <1>;
+	+               spi-max-frequency = <25000000>;
+	+       };
+	+};
+	+
+	+&codec {
+	+       status = "okay";
+	+};
+	+
+	 &usb_otg {
+		dr_mode = "otg";
+		status = "okay";
+	diff --git a/arch/arm/boot/dts/sun4i-a10.dtsi b/arch/arm/boot/dts/sun4i-a10.dtsi
+	index 2c8f5e6..43dafab 100644
+	--- a/arch/arm/boot/dts/sun4i-a10.dtsi
+	+++ b/arch/arm/boot/dts/sun4i-a10.dtsi
+	@@ -970,6 +970,7 @@
+					allwinner,function = "spi2";
+					allwinner,drive = <SUN4I_PINCTRL_10_MA>;
+					allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
+	+                               compatible = "spidev";
+				};
+	 
+				spi2_pins_b: spi2@1 {
+
+
+Building the kernel::
+
+	make zImage dtbs
+	cp arch/arm/boot/zImage /mnt/vmlinuz
+	cp arch/arm/boot/dts/..a10xxx /mnt/dtbs/
+
 @TODO:there is already an in kernel driver for a set of small lcd drivers in drivers/staging/btftf
 
 
@@ -220,7 +276,7 @@ Hence::
 Additional packages on the system
 ---------------------------------
 
-vim rsync python-usb android-tools-fastboot unzip python-twisted-core
+vim rsync python-usb android-tools-fastboot unzip python-twisted-core autossh
 
 
 cleanup
@@ -269,8 +325,8 @@ Format the partitions::
 
 togle the bootable flag
 
-COPYING the low level bootloader
---------------------------------
+duplicating the sdcard: low level bootloader
+--------------------------------------------
 
 The ROM on the A10 works like the ROM on the A13 hence it is stored in the first blocks of the storage
 somewhere between the master boot record and the first partition. to copy an sdcard one therefore
@@ -344,8 +400,8 @@ While starting the installation on a new sdcard I was getting the following mess
 
 
 
-MODIFY the uboot paramters
----------------------------
+Setting up the uboot paramters
+------------------------------
 
 The bootloader u-boot "operating system by now" can read the device tree and support scripting. The scripts/environment can be loaded from a files called boot.src from the first partiton of the mmc device(either FAT or and EXT file system based on the configuration of u-boot. boot.src contains a small header and can therefore not be edited directly.I found the `ubuntu wiki entry`_ quite usefull
 
@@ -394,7 +450,7 @@ Add the target user to the plugdev group as to give him access to the usb device
 	gpassd -a keesj plugdev
 
 
-SYNCING BUILDS
+Syncing builds
 --------------
 We have setup a server lxc-flash-server with a flasher user account
 
@@ -419,32 +475,55 @@ sync.sh::
 	) | tee -a /root/sync.log
 
 
-DATE SYNC
+date sync
 ---------
 
 ntpdate ntp0.nl.net
 
 
+Systemd setup
+-------------
+
+.. image:: images/systemd.png
 
 
+The default debian install does not use systemd's networking functionality
+and the device only gets an ip address assigned is the network socket is 
+present during boot. I therefore had to spend some time understanding why
+things where not working. This was my first enounter with systemd
+
+Switch to systemd base networking
+---------------------------------
+
+Remove old style stuff::
+
+	rm -rf /etc/network
+
+Enable system network services::
+
+	root@flasher:~# systemctl enable systemd-networkd.service
+	root@flasher:~# systemctl enable systemd-resolved.service
+
+Create a network config file::
+
+	root@flasher:~# cat /etc/systemd/network/wired.network
+	[Match]
+	Name=eth0
+
+	[Network]
+	DHCP=v4
 
 
+Creating a system based service
+-------------------------------
+Creating a systemd based service is not as bad as people think. The syntax
+for the systemd services is pretty good (compared to shell scripts !!) and it allows
+for restarts, running as special users and some form of dependencies
+read `tstellanova gist`_ or perhaps `use stackoverflow`_
 
 
-
-SYSTEM D service
-----------------
-
-.. image: impage/systemd.png
-
-rm -rf /etc/network
-
-https://gist.github.com/tstellanova/7323116
-
-
-or perhaps
-
-http://stackoverflow.com/questions/18086896/running-a-persistent-python-script-from-systemd
+.. _tstellanova gist: https://gist.github.com/tstellanova/7323116 or perhaps 
+.. _use stackoverflow: http://stackoverflow.com/questions/18086896/running-a-persistent-python-script-from-systemd
 
 flasher.service::
 
@@ -508,17 +587,6 @@ systemd status of the flasher service::
 
 
 #
-### networking
-root@flasher:~# systemctl enable systemd-networkd.service
-root@flasher:~# systemctl enable systemd-resolved.service
-Created symlink from /etc/systemd/system/multi-user.target.wants/systemd-resolved.service to /lib/systemd/system/systemd-resolved.service.
-root@flasher:~# cat /etc/systemd/network/wired.network
-[Match]
-Name=eth0
-
-[Network]
-DHCP=v4
-
 
 
 
@@ -551,25 +619,28 @@ sync.sh::
 
 
 
-AUTOSSH
+Calling home
+------------
+
 https://gist.github.com/thomasfr/9707568
 
 
-[Unit]
-Description=Keeps a tunnel to 'remote.example.com' open
-After=network.target
+callhome.service::
 
-[Service]
-User=autossh
-# -p [PORT]
-# -l [user]
-# -M 0 --> no monitoring
-# -N Just open the connection and do nothing (not interactive)
-# LOCALPORT:IP_ON_EXAMPLE_COM:PORT_ON_EXAMPLE_COM
-ExecStart=/usr/bin/autossh -M 0 -N -q -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -p 22 -l autossh remote.example.com -L 7474:127.0.0.1:7474 -i /home/autossh/.ssh/id_rsa
+	[Unit]
+	Description=Keeps a tunnel to 'remote.example.com' open
+	After=network.target
 
-[Install]
-WantedBy=multi-user.target
+	[Service]
+	User=autossh
+	# -p [PORT]
+	# -l [user]
+	# -M 0 --> no monitoring
+	# -N Just open the connection and do nothing (not interactive)
+	# LOCALPORT:IP_ON_EXAMPLE_COM:PORT_ON_EXAMPLE_COM
+	ExecStart=/usr/bin/autossh -M 0 -N -q -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -p 22 -l autossh remote.example.com -L 7474:127.0.0.1:7474 -i /home/autossh/.ssh/id_rsa
 
+	[Install]
+	WantedBy=multi-user.target
 
 add autossh user on server and client
