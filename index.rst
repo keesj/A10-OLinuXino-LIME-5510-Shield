@@ -1,22 +1,19 @@
-.. A10-OLinuXino-LIME-5510-Shield documentation master file, created by
-   sphinx-quickstart on Sat Mar 19 07:43:06 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Index
+======================================
 
-Welcome to A10-OLinuXino-LIME-5510-Shield's documentation!
-==========================================================
+The project brings togteher quite a few things I learned in the past including 3d drawing using openscad, design using KiCad, Kernel and driver development (Linux / Device tree), Electronics design and properly setting up a debian based system.
+
+The initial goal of this project was to create a small device what could be used to install custom "ROM"s on Android devices using the fastboot tools.
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+
+   hw_selection_board
+   hw_selection_ui
+   sw_install
+   project_wrapup
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
-

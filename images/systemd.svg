@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   inkscape:export-filename="systemd.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="460.82589"
+     inkscape:cy="827.27102"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="spiral"
+       style="fill:none;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path2985"
+       sodipodi:cx="352.14285"
+       sodipodi:cy="238.07646"
+       sodipodi:expansion="1"
+       sodipodi:revolution="3"
+       sodipodi:radius="254.61055"
+       sodipodi:argument="-18.155537"
+       sodipodi:t0="0"
+       d="m 352.14285,238.07646 c 9.81281,8.16539 -6.16549,17.25599 -13.57142,16.30953 -20.0696,-2.56483 -25.54022,-27.46915 -19.04764,-43.45237 11.61369,-28.59022 47.9743,-35.14675 73.33332,-21.78576 37.21538,19.60781 45.00678,68.74634 24.52387,103.21428 -27.3005,45.94034 -89.61162,54.97294 -133.09522,27.26198 -54.71968,-34.87141 -64.99363,-110.52099 -30.0001,-162.97617 42.38185,-63.530253 131.45513,-75.04581 192.85712,-32.73821 72.36013,49.85803 85.11776,152.40468 35.47633,222.73807 C 425.30612,427.85049 309.25457,441.8507 230.00008,384.86225 139.9461,320.10836 124.70284,190.53062 189.04753,102.36227 261.23255,3.4507149 404.35153,-13.036034 501.42846,58.671606 609.20225,138.28068 626.93285,294.95195 547.85724,400.93349"
+       transform="translate(-1.4285714,40.714286)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="text2987"
+       sodipodi:linespacing="125%"><textPath
+         xlink:href="#path2985"
+         id="textPath2995"><tspan
+   id="tspan2991">Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd Systemd </tspan></textPath></text>
+  </g>
+</svg>

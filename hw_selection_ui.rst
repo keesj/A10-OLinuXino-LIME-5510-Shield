@@ -21,8 +21,8 @@ Input:
 - Run a web server
 
 
-The Choice
-==========
+The Choice of UI
+----------------
 
 
 I looked at the different options and sometimes came up with more options but in

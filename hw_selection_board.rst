@@ -17,7 +17,7 @@ Also this being a small sideproject I wanted to use as much open hardware and
 software a possible. This allows me to write about what I learned but also,
 expecting so spend some evenings on the project, generally make me feel good.
 
-Having spent a considerable amount of time poring
+Having spent a considerable amount of time porting
 `Minx3 on the BeagleBone Black`_ knowing that the rest of the world loves the
 `Raspberry Pi`_ I also wanted to consider using `Olimex`_ hardware beacause of
 their open hardware ethics and `my previous work on the A13`_.
@@ -34,7 +34,8 @@ BeagleBone Black
 
 The `BeagleBoard (TI) community`_ was one of the first real open source hardware
 platform. The documentation of the board in excellent and the SoC is VERY well
-documented and the community is professional.
+documented and the community is professional. The device was there before the
+Raspberry Pi and starting the BeagleBone black the prices are comparable.
 
 Raspberry Pi
 ------------
@@ -87,16 +88,29 @@ choices without researching every topic. Questions I asked myself where:
 Will any of the boards tick all the boxes? Bellow is a table I made (after the fact) on some things I considered
 while shopping around for a board.
 
-============== ===== ======= =============== ============== ============== ================== ==================
-Board          Price Case    Mainline Kernel Open Hardware  Documented Soc     Proper USB         Proper OS
-============== ===== ======= =============== ============== ============== ================== ==================
-`BBB (black)`_ 59,50 `6,29`_  No             Yes            Yes             musb(not great)   Unclear to me
-`BBB (Green)`_ 42,95 `6,29`_  No             Yes            yes             musb(not great)   Unclear to me
-`RyPi`_        34,95 `6,95`_  No             Nope           Nope            not great         Yes
-`Lime`_        30,00 `5,00`_  Yes!!          Yes            Nope            yes               `Official Debian`_
-============== ===== ======= =============== ============== ============== ================== ==================
+============== ===== ======= =============== ============== ============== ================== ================== ===============
+Board          Price Case    Mainline Kernel Open Hardware  Documented Soc     Proper USB         Proper OS      Ways to extend
+============== ===== ======= =============== ============== ============== ================== ================== ===============
+`BBB (black)`_ 59,50 `6,29`_  No             Yes            Yes             musb(not great)   Unclear to me      Capes
+`BBB (Green)`_ 42,95 `6,29`_  No             Yes            yes             musb(not great)   Unclear to me      Capes
+`RyPi`_        34,95 `6,95`_  No             Nope           Nope            not great         Yes                Lots of capes
+`Lime`_        30,00 `5,00`_  Yes!!          Yes            Nope            yes               `Official Debian`_ UEXT/GPIO
+============== ===== ======= =============== ============== ============== ================== ================== ===============
 
-I also ordered a smaller `MIPS based board`_ from Olimex to give it a try
+I also ordered a smaller `MIPS based board`_/OpenWRT from Olimex to give it a try.
+The BeagleBoard did not make it mainly because I have been using it as my main
+mail server for the last couple of years and that the debian install on there
+is getting so old I can't upgrade it. When going to the beagleboard website it
+is just hard to understand what the status is of the project. The USB controller
+while functional has know issues. Next I guess I also wanted something new.
+
+I will at some point need to look into the Raspberry Pi but for this project I need
+to power phones while flashing the software is it not suitable. It also does not
+match what I want from hardware (e.g. to be open). I therefore looked at the
+Olimex boards (ranging from the A13, the A10 and the A20). the Lime is a really
+small board and the cheapest one was the A10 and it had a nice case.
+
+
 
 .. _MIPS based board: https://www.olimex.com/Products/OLinuXino/RT5350F/RT5350F-OLinuXino-EVB/open-source-hardware
 .. _BBB (black): https://www.antratek.nl/beaglebone-black-rev-c-2774
