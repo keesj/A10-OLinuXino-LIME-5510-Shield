@@ -94,7 +94,7 @@ Creating the sdcard::
  ...
 
 
-.. _The boot log for the installer: logs/debian_jessie_installer_kernel_log.txt
+.. _The boot log for the installer: _static/logs/debian_jessie_installer_kernel_log.txt
 
 Followed debian install
 -----------------------
