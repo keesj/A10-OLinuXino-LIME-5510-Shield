@@ -622,25 +622,42 @@ sync.sh::
 Calling home
 ------------
 
-https://gist.github.com/thomasfr/9707568
+Because most devices do no have a UI it is nice if devices on the network can "call home".
+Initiall this was just done using a ssh command pushing the IP address on the central server
+but getting shell acccess is so much nicer hence we added a reverse tunnel functionality.
+
+We found some hits on `thomasfr's gist`_ but used a silghtly different approach. After installing autossh
+we created a new local user called autossh and configured it's .ssh/config to allow port forwarding::
+
+	autossh@flasher:~$ cat .ssh/config 
+	Host lxc-flash-server
+	HostName yoyo.company.com
+	User autossh
+	RemoteForward 4321 127.0.0.1:22
+
+With this config is is possible from the flasher device to 
+connect to the remove server (where we have setup keys) and create
+a listening socker on port 4321 on the remote server(We will need to 
+tweak this port number for different devices)
 
 
-callhome.service::
 
+.. _thomasfr's gist: https://gist.github.com/thomasfr/9707568
+
+
+autossh systemd service::
+
+	autossh@flasher:~$ cat /lib/systemd/system/autossh.service 
 	[Unit]
 	Description=Keeps a tunnel to 'remote.example.com' open
-	After=network.target
+	After=network-online.target
+	Wants=network-online.target
+
 
 	[Service]
 	User=autossh
-	# -p [PORT]
-	# -l [user]
-	# -M 0 --> no monitoring
-	# -N Just open the connection and do nothing (not interactive)
-	# LOCALPORT:IP_ON_EXAMPLE_COM:PORT_ON_EXAMPLE_COM
-	ExecStart=/usr/bin/autossh -M 0 -N -q -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -p 22 -l autossh remote.example.com -L 7474:127.0.0.1:7474 -i /home/autossh/.ssh/id_rsa
+	ExecStart=/usr/bin/autossh -M 0 -N -q  lxc-flash-server
+	Restart=always
 
 	[Install]
-	WantedBy=multi-user.target
-
-add autossh user on server and client
+	WantedBy=graphical.target
