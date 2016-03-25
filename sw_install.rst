@@ -19,6 +19,9 @@ on irc I decided that trying out the mailine kernel was the thing to do and so d
 Attaching serial
 ----------------
 
+
+.. image:: images/serial_cable.jpg
+
 We attached a serial as described on `my A13 page`_
 where RX(INPUT)=GREEN, TX(OUTPUT)=RED, GND(GROUND)=BLUE and used picocom to attach 
 to the serial
@@ -276,7 +279,9 @@ Building the kernel::
 Additional packages on the system
 ---------------------------------
 
-vim rsync python-usb android-tools-fastboot unzip python-twisted-core autossh
+Installed additional packages::
+
+	apt-get install vim rsync python-usb android-tools-fastboot unzip python-twisted-core autossh
 
 
 Cleanup debian

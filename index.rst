@@ -12,6 +12,7 @@ Contents:
 
    hw_selection_board
    hw_selection_ui
+   hw_proto_and_debug
    sw_install
    project_wrapup
 
