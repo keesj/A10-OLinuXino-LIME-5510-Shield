@@ -279,8 +279,8 @@ Additional packages on the system
 vim rsync python-usb android-tools-fastboot unzip python-twisted-core autossh
 
 
-cleanup
---------
+Cleanup debian
+--------------
 
 - cheanup packages and configuration
 -  aptitude purge ~c
@@ -325,7 +325,7 @@ Format the partitions::
 
 togle the bootable flag
 
-duplicating the sdcard: low level bootloader
+Duplicating the sdcard: low level bootloader
 --------------------------------------------
 
 The ROM on the A10 works like the ROM on the A13 hence it is stored in the first blocks of the storage
@@ -415,10 +415,184 @@ convert the binary to a file::
 
 The changes that where needed where to remove "quiet" and add root=/dev/mmcblk0p2 to the command line
 
+boot.script::
+
+	# boot script for Allwinner SunXi-based devices
+
+	# Mainline u-boot v2014.10 introduces a new default environment and
+	# a new common bootcmd handling for all platforms, which is not fully
+	# compatible with the old-style environment used by u-boot-sunxi.
+	# This script therefore needs to check in which environment it
+	# is running and set some variables accordingly.
+
+	# On u-boot-sunxi, this script assumes that ${device} and ${partition}
+	# are set.
+
+	# The new-style environment predefines ${boot_targets}, the old-style
+	# environment does not.
+	if test -n "${boot_targets}"
+	then
+	  echo "Mainline u-boot / new-style environment detected."
+	  # Mainline u-boot v2014.10 uses ${devtype}, ${devnum} and
+	  # ${bootpart} where u-boot-sunxi uses ${device} and ${partition}.
+	  if test -z "${device}"; then setenv device "${devtype}"; fi
+	  if test -z "${partition}"; then setenv partition "${devnum}:${bootpart}"; fi
+	else
+	  echo "U-boot-sunxi / old-style environment detected."
+	  # U-boot-sunxi does not predefine kernel_addr_r, fdt_addr_r and
+	  # ramdisk_addr_r, so they have to be manually set. Use the values
+	  # from mainline u-boot v2014.10, except for ramdisk_addr_r,
+	  # which is set to 0x44300000 to allow for initrds larger than
+	  # 13MB on u-boot-sunxi.
+	  setenv kernel_addr_r 0x42000000
+	  setenv fdt_addr_r 0x43000000
+	  setenv ramdisk_addr_r 0x44300000
+	fi
+
+	if test -n "${console}"; then
+	  setenv bootargs "${bootargs} console=${console}"
+	fi
+
+	setenv bootargs ${bootargs} root=/dev/mmcblk0p2
+
+
+	image_locations='/boot/ /'
+	kvers='3.16.0-4-armmp'
+
+	for pathprefix in ${image_locations}
+	do
+	  if test -e ${device} ${partition} ${pathprefix}vmlinuz-${kvers}
+	  then
+	    load ${device} ${partition} ${kernel_addr_r} ${pathprefix}vmlinuz-${kvers} \
+	    && load ${device} ${partition} ${fdt_addr_r} ${pathprefix}dtb-${kvers} \
+	    && load ${device} ${partition} ${ramdisk_addr_r} ${pathprefix}initrd.img-${kvers} \
+	    && echo "Booting Debian ${kvers} from ${device} ${partition}..." \
+	    && bootz ${kernel_addr_r} ${ramdisk_addr_r}:${filesize} ${fdt_addr_r}
+	  fi
+	done
+
+
 convert the script back to a binary::
 
 	mkimage -A arm -T script -C none -n "Ubuntu boot script" -d boot.script boot.scr
 
+
+u-boot hackery
+--------------
+
+If you get the following error::
+
+	U-Boot 2014.10+dfsg1-5 (Apr 07 2015 - 21:52:20) Allwinner Technology
+
+	CPU:   Allwinner A10 (SUN4I)
+	I2C:   ready
+	DRAM:  512 MiB
+	MMC:   SUNXI SD/MMC: 0
+	*** Warning - bad CRC, using default environment
+
+	In:    serial
+	Out:   serial
+	Err:   serial
+	SCSI:  SUNXI SCSI INIT
+	SATA link 0 timeout.
+	AHCI 0001.0100 32 slots 1 ports 3 Gbps 0x1 impl SATA mode
+	flags: ncq stag pm led clo only pmp pio slum part ccc apst 
+	Net:   emac
+	Hit any key to stop autoboot:  0 
+	switch to partitions #0, OK
+	mmc0 is current device
+	Scanning mmc 0...
+	Found U-Boot script /boot.scr
+	2129 bytes read in 66 ms (31.3 KiB/s)
+	## Executing script at 43100000
+	Mainline u-boot / new-style environment detected.
+	3184176 bytes read in 1167 ms (2.6 MiB/s)
+	24946 bytes read in 121 ms (201.2 KiB/s)
+	 ** ext4fs_devread read error - block
+	SCRIPT FAILED: continuing...
+	** Can't read partition table on 0:0 **
+	** Invalid partition 1 **
+	** Can't read partition table on 0:0 **
+	** Invalid partition 1 **
+	** Can't read partition table on 0:0 **
+	** Invalid partition 1 **
+	scanning bus for devices...
+	Found 0 device(s).
+
+	SCSI device 0: 
+	    Device 0: not available
+	(Re)start USB...
+	USB0:   USB EHCI 1.00
+	scanning bus 0 for devices... 1 USB Device(s) found
+	USB1:   USB EHCI 1.00
+	scanning bus 1 for devices... 1 USB Device(s) found
+	       scanning usb for storage devices... 0 Storage Device(s) found
+
+	USB device 0: unknown device
+	ENET Speed is 100 Mbps - FULL duplex connection
+	BOOTP broadcast 1
+	BOOTP broadcast 2
+	BOOTP broadcast 3
+	BOOTP broadcast 4
+	BOOTP broadcast 5
+	BOOTP broadcast 6
+
+it is u-boot who can not load the initrd from the file system I think this is a but in the u-boot ext file system handling
+.  The workaround I found was to copy and rename the initrd (e.g. the same file::
+
+	root@e540:/mnt# ls -lart
+	total 18047
+	-rw-r--r--  1 root root  2408715 Feb 29 23:06 System.map-3.16.0-4-armmp
+	-rw-r--r--  1 root root   153660 Feb 29 23:06 config-3.16.0-4-armmp
+	drwx------  2 root root    12288 Mar  9 11:50 lost+found
+	lrwxrwxrwx  1 root root       22 Mar  9 12:15 vmlinuz -> vmlinuz-3.16.0-4-armmp
+	lrwxrwxrwx  1 root root       25 Mar  9 12:15 initrd.img -> initrd.img-3.16.0-4-armmp
+	-rw-r--r--  1 root root 12603155 Mar  9 14:17 initrd.img-3.16.0-4-armmp
+	lrwxrwxrwx  1 root root       18 Mar  9 14:17 dtb -> dtb-3.16.0-4-armmp
+	-rw-r--r--  1 root root     2057 Mar 14 15:34 boot.script
+	-rw-r--r--  1 root root     2129 Mar 14 15:35 boot.scr
+	-rw-r--r--  1 root root  3184176 Mar 15 10:55 vmlinuz-3.16.0-4-armmp
+	-rw-r--r--  1 root root    24946 Mar 15 11:48 dtb-3.16.0-4-armmp
+	drwxr-xr-x 25 root root     4096 Mar 19 07:35 ..
+	drwxr-xr-x  3 root root     1024 Mar 25 08:38 .
+	root@e540:/mnt# cp initrd.img-3.16.0-4-armmp m
+	root@e540:/mnt# rm initrd.img-3.16.0-4-armmp
+	root@e540:/mnt# mv m initrd.img-3.16.0-4-armmp
+	root@e540:/mnt# sync
+	root@e540:/mnt# cd
+	root@e540:~# umount /mnt 
+
+Afther that the bootloaderd load normally::
+
+	*** Warning - bad CRC, using default environment
+
+	In:    serial
+	Out:   serial
+	Err:   serial
+	SCSI:  SUNXI SCSI INIT
+	SATA link 0 timeout.
+	AHCI 0001.0100 32 slots 1 ports 3 Gbps 0x1 impl SATA mode
+	flags: ncq stag pm led clo only pmp pio slum part ccc apst 
+	Net:   emac
+	Hit any key to stop autoboot:  0 
+	switch to partitions #0, OK
+	mmc0 is current device
+	Scanning mmc 0...
+	Found U-Boot script /boot.scr
+	2129 bytes read in 66 ms (31.3 KiB/s)
+	## Executing script at 43100000
+	Mainline u-boot / new-style environment detected.
+	3184176 bytes read in 1150 ms (2.6 MiB/s)
+	24946 bytes read in 121 ms (201.2 KiB/s)
+	12603155 bytes read in 5817 ms (2.1 MiB/s)
+	Booting Debian 3.16.0-4-armmp from mmc 0:1...
+	Kernel image @ 0x42000000 [ 0x000000 - 0x309630 ]
+	## Flattened Device Tree blob at 43000000
+	   Booting using the fdt blob at 0x43000000
+	   Loading Ramdisk to 4f3fb000, end 4fffff13 ... OK
+	   Loading Device Tree to 4f3f1000, end 4f3fa171 ... OK
+
+	Starting kernel ...
 
 
 SSH cleanup
@@ -475,7 +649,7 @@ sync.sh::
 	) | tee -a /root/sync.log
 
 
-date sync
+Date sync
 ---------
 
 ntpdate ntp0.nl.net
@@ -658,6 +832,7 @@ autossh systemd service::
 	User=autossh
 	ExecStart=/usr/bin/autossh -M 0 -N -q  lxc-flash-server
 	Restart=always
+	RestartSec=60
 
 	[Install]
 	WantedBy=graphical.target
