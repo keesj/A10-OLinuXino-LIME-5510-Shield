@@ -68,6 +68,7 @@ for this project.
 .. _open hardware design boards: https://www.olimex.com/Products/OLinuXino/open-source-hardware
 
 .. _BeagleBoard (TI) community: https://beagleboard.org/
+
 https://www.olimex.com/Products/OLinuXino/open-source-hardware
 
 

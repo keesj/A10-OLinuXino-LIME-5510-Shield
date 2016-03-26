@@ -1,6 +1,12 @@
 Software install
 ================
 
+.. note:: The install covers what I needed for my final project and thus
+	does not only contain the bare minimals to get the shield working but
+	also how I performed the flasher tool I wanted to create among other things.
+
+	Most relevant are the kernel tweaks to enable SPIDEV and such.
+
 The debian image that gets shipped with the A10 is based on an older debian (not Jessie)
 the board support is quite good but some tools (like android fastboot that I needed
 where missing). When  using the default image the device boots into full graphical
