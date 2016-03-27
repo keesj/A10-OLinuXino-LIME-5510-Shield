@@ -288,6 +288,10 @@ Additional packages on the system
 Installed additional packages::
 
 	apt-get install vim rsync python-usb android-tools-fastboot unzip python-twisted-core autossh
+	
+For for development::
+
+	apt-get install strace build-essential git tmux
 
 
 Cleanup debian

@@ -113,9 +113,104 @@ Once the Lime cable arrived I was time to prototype do the hardware brindup and 
 .. image:: images/proto/2_proto_and_schematics.jpg
 
 My work started by searching for sample code to talk to the LCD module and I was lucky finding the `A20 MOD-LCD3310`_ sample code this code
-depends on SPIDEV being present (see how I enabled this in :doc:`sw_install`.
+depends on SPIDEV being present (see how I enabled this in :doc:`sw_install`.)
+
+The first thing to test was the power. I attached a multimeter to the gnd/3.3V pin and saw it was 3.3.v
+
+The second thing was to test the backlight (not really but it sounds cool)::
+
+	root@flasher:/sys/class/gpio# cd /sys/class/gpio/
+	root@flasher:/sys/class/gpio# echo 202 > export 
+	root@flasher:/sys/class/gpio# cd gpio202
+	root@flasher:/sys/class/gpio/gpio202# echo out > direction 
+	root@flasher:/sys/class/gpio/gpio202# echo 1 > value 
+
+What really happend is that I compiled the `A20 MOD-LCD3310`_ sample code on the LIME and that things where not working. I did a few things.
+First I went to `my hackerspace`_ to look at the signals using an oscilloscope. Using that I was able to determine that all signals where doing 
+mostly what I expected from them(e.g. SPI clock and data doing thing at the right time, the chip select working). The device however wat not showing
+any sign of life. The clock signal however did not look good (e.g. not sharp)
+
+To validate the screen was indeed also working on 3.3v (I only tested it on a 5v arduino) I plugged the display on a 3.3v arduino and ran some sample code
+to use the display:
+
+.. image:: images/proto_arduino.jpg
+
+Next I hoocked up my saleae logic analyzer to the display and started comparing the working sample and the sample using the Lime board.
+
+.. image:: images/saleae_logic_running.png
+
+I soon discovered that the `A20 MOD-LCD3310`_ sample code was using the wrong SPI mode (namely 3 instead of 0). After fixing this I started seeing thing on the display
+
+.. image:: images/proto_lcd_working_on_lime.jpg
+
+The screen however did still have some problems. For example the screen data slowly was getting corrupted
+
+.. image:: images/proto_lcd_working_on_lime_weirdness.jpg
+
+This problem I still need to debug but while trying to debug the problem I found that the problem did not appear while the logic analyser was plugged in.
+For now I "discovered" that adding a pulldown from SCK to GND mostly solves the problem. Is this a drive strenght issue or something else I don't know.
+I for now move on to the next part of the project. While I would like to get a 100% working prototype I can either add non populated resistors or patch the boards
+when ready.
+
+.. image:: images/proto_lcd_working_on_lime_weirdness_fix.jpg
+
+Button bringup
+--------------
+After determining the possible GPIO canditates to use for the GPIO buttons
+I played around witht the GPIO library that is also found in the A20 sample code. 
+The buttons worked right away.
+
+modified main.c from the LCD project::
+
+	#include "LCD3310.h"
+	#include <stdio.h>
+	#include <unistd.h>
+	#include "gpio_lib.h"
+
+	#define BUT_A SUNXI_GPG(7)
+	#define BUT_B SUNXI_GPG(8)
+	#define BUT_C SUNXI_GPG(9)
+
+	void setup_gpio(){
+		sunxi_gpio_set_cfgpin( BUT_A, SUNXI_GPIO_INPUT);
+		sunxi_gpio_set_cfgpin( BUT_B, SUNXI_GPIO_INPUT);
+		sunxi_gpio_set_cfgpin( BUT_C, SUNXI_GPIO_INPUT);
+
+	};
+	int main ()
+	{
+		setup_gpio();
+		printf("GPIO number %i, %i and %i",BUT_A,BUT_B,BUT_C);
+		int a , b , c;
+		int counter=0;
+		int last_sum,sum;
+		char data[80];
+		char data2[80];
+		LCDInit();
+		//LCDContrast(0x70);
+		while(1 == 1){
+			a = sunxi_gpio_input(BUT_A);
+			b = sunxi_gpio_input(BUT_B);
+			c = sunxi_gpio_input(BUT_C);
+			sum = 1 * a + 2 * b + 3 * c;
+			if (sum != last_sum){
+				counter++;
+				snprintf(data,40,"a=%i,b=%i,c=%i",a,b,c);
+				snprintf(data2,40,"%i   ",counter);
+				printf("%s\n",data);
+				LCDStr(0, (unsigned char *)"*** OLIMEX ***", 1);
+				LCDStr(1, (unsigned char *)"  OLinuXINO   ", 0);
+				LCDStr(2, data2,0);
+				LCDStr(3, (unsigned char *)"  MOD-LCD3310 ", 0);
+				LCDStr(4, data,0);
+			}
+			
+			last_sum = sum;
+			usleep(10);
+		};
+	}
 
 
-
+.. _my hackerspace: http://technologia-incognita.nl/
 
 .. _A20 MOD-LCD3310: https://github.com/OLIMEX/OLINUXINO/tree/master/SOFTWARE/A20/A20-OLinuXino-Micro%20with%20MOD-LCD3310
