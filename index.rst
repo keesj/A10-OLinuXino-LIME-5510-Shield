@@ -5,6 +5,12 @@ The project brings togteher quite a few things I learned in the past including 3
 
 The initial goal of this project was to create a small device what could be used to install custom "ROM"s on Android devices using the fastboot tools.
 
+You can find the source code schematics BOM and such on `the project git repository`_. 
+The source code for this website is also stored in `git in a branch`_
+
+.. _git in a branch: https://github.com/keesj/A10-OLinuXino-LIME-5510-Shield/tree/website-source-code
+.. _the project git repository: https://github.com/keesj/A10-OLinuXino-LIME-5510-Shield
+
 Contents:
 
 .. toctree::
