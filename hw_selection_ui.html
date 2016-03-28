@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hardware selection UI &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="next" title="Hardware prototype and debug" href="hw_proto_and_debug.html"/>
+        <link rel="prev" title="Hardware selection Board" href="hw_selection_board.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> A10-OLinuXino-LIME-5510-Shield
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Hardware selection UI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#choice-of-lcd-displays">Choice of LCD displays</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">A10-OLinuXino-LIME-5510-Shield</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Hardware selection UI</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/hw_selection_ui.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-selection-ui">
+<h1>Hardware selection UI<a class="headerlink" href="#hardware-selection-ui" title="Permalink to this headline">¶</a></h1>
+<p>For flashing the devices it is very nice if you can have some form of UI and there are many ways
+of getting there.</p>
+<p>Output:</p>
+<ul class="simple">
+<li>Attach the device to a HDMI screen</li>
+<li>Attach LEDs to the board</li>
+<li>Attach an LCD screen or 7-segment display</li>
+<li>Run a web server and access the UI on a phone or similar</li>
+<li>Use sound as output</li>
+<li>Use the usb gadget framework(e.g. allow to attach to the board with a phone and interact with the device)</li>
+</ul>
+<p>Input:</p>
+<ul class="simple">
+<li>No input, just flash what is on the system</li>
+<li>Use different USB keys or MMC cards to flash different software</li>
+<li>Add buttons to the design</li>
+<li>Allow the device to connect to a server and configure the device online</li>
+<li>Run a web server</li>
+</ul>
+<p>Requirements:
+I looked at the different options and sometimes came up with more options but in
+the end I wanted something that can work standalone. The idea to have a standalone
+device that can be taken to evens really sounted very nice.</p>
+<p>Here are other options I was thinking about and some reasons I did not follow up on them:
+Runing a webserver was not feasible because one also then needs do networking/discovery and I did not
+want to dig into that. I might have to combine this with a small display on the device as to publish
+the IP address of the device.</p>
+<p>I also looked at using the HDMI port and hooking a keyboard to the device but
+that really started to become a cumbersome project(We might as well provide
+documentation on flashing devices from a standard PC).</p>
+<p>I therefore settled for adding a screen and a few buttons to the flashing device</p>
+<img alt="_images/ui_think.jpg" src="_images/ui_think.jpg" />
+<div class="section" id="choice-of-lcd-displays">
+<h2>Choice of LCD displays<a class="headerlink" href="#choice-of-lcd-displays" title="Permalink to this headline">¶</a></h2>
+<p>I looked a different displays that where present and available for the Olimex board. This is where a RyPi
+might have been a no brainer because there are probably many (but still quite expensive) display and
+solution present. Looking the available options and seeing that in many cases I would have to spend and additional
+40 Euro would bring the cost of this &#8220;little&#8221; hardware project to something I did not feel confortable with specially
+knowing that one can buy cheap Android phones or tablets bellow that price range.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="19%" />
+<col width="24%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device type</th>
+<th class="head">price</th>
+<th class="head">connectivity</th>
+<th class="head">Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LCD screen</td>
+<td>+- 40 euro</td>
+<td>cape</td>
+<td>quite big</td>
+</tr>
+<tr class="row-odd"><td>LCD screen + touch pad</td>
+<td>+- 40 euro</td>
+<td>cape</td>
+<td>quite big</td>
+</tr>
+<tr class="row-even"><td>7Segment display</td>
+<td>few euro</td>
+<td>lots of wires</td>
+<td>quite high</td>
+</tr>
+<tr class="row-odd"><td>16x2 char display</td>
+<td>10 Euro</td>
+<td>i2c</td>
+<td>nice fit</td>
+</tr>
+<tr class="row-even"><td>Nokia 3310 display</td>
+<td>few euro</td>
+<td>spi</td>
+<td>slim fit</td>
+</tr>
+</tbody>
+</table>
+<p>Knowing that the Lime also has an expansion board and an UEXT connector it was nice to see that there
+was an <a class="reference external" href="https://www.olimex.com/Products/Modules/LCD/MOD-LCD3310/open-source-hardware">LCD3310 module</a> and I (wrongly) assumed that the board would be plug an play
+We later also found that olimex is selling the <a class="reference external" href="https://www.olimex.com/Products/Components/LCD/LCD%20DISPLAY%20NOKIA3310/">display and corresponding connector</a> on their website</p>
+<img alt="_images/MOD-LCD3310-1.jpg" src="_images/MOD-LCD3310-1.jpg" />
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hw_proto_and_debug.html" class="btn btn-neutral float-right" title="Hardware prototype and debug" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hw_selection_board.html" class="btn btn-neutral" title="Hardware selection Board" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Kees Jongenburger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

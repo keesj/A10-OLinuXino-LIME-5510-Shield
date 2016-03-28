@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hardware prototype and debug &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="next" title="Software install" href="sw_install.html"/>
+        <link rel="prev" title="Hardware selection UI" href="hw_selection_ui.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> A10-OLinuXino-LIME-5510-Shield
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Hardware prototype and debug</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uext-connector">UEXT connector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schematics">Schematics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-proto-pcb">The proto PCB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lcd-bringup">LCD bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#button-bringup">Button bringup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functional-prototype">Functional prototype</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">A10-OLinuXino-LIME-5510-Shield</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Hardware prototype and debug</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/hw_proto_and_debug.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-prototype-and-debug">
+<h1>Hardware prototype and debug<a class="headerlink" href="#hardware-prototype-and-debug" title="Permalink to this headline">¶</a></h1>
+<p>After ordering the Lime board and finding a Nokia LCD5110 in my shack it was time
+to prototype and learn about the board itself.</p>
+<p>I played with the components to see how they would fit</p>
+<img alt="_images/proto_case_fit.jpg" src="_images/proto_case_fit.jpg" />
+<p>The first problem I had was that the pin headers of the Lime board are quite small and
+I did not have the possiblity to attach anything to the board. I had to wait and order
+the A10-LIME-UEXT <a class="reference external" href="https://www.olimex.com/Products/OLinuXino/A10/A10-OLinuXino-LIME-UEXT/open-source-hardware">adapter</a> and <a class="reference external" href="https://www.olimex.com/Products/Components/Cables/CABLE-40-40-10CM/">cable</a></p>
+<img alt="_images/A10-LIME-UEXT-1.jpg" src="_images/A10-LIME-UEXT-1.jpg" />
+<div class="section" id="uext-connector">
+<h2>UEXT connector<a class="headerlink" href="#uext-connector" title="Permalink to this headline">¶</a></h2>
+<p>Olimex defined a very simple connector that can be used to attach many different
+devices and created <a class="reference external" href="https://www.olimex.com/Products/Modules/UEXT/">a spec for it</a>.  The connector has support for SPI/I2C/UART and POWER.</p>
+</div>
+<div class="section" id="schematics">
+<h2>Schematics<a class="headerlink" href="#schematics" title="Permalink to this headline">¶</a></h2>
+<p>While I did not indend to use the physical connetor it made my job easy for the LCD connector
+because if was able to just copy the <a class="reference external" href="https://github.com/OLIMEX/UEXT-MODULES/blob/master/MOD-LCD3310/Hardware/MOD-LCD3310-schematic.pdf">MOD-LCD3310-schematics</a> the device should work fine. it halso helped
+me choose witch of the 160 GPIO&#8217;s to use.</p>
+<p>This is the schematics of the MOD-LCD3310 UEXT module</p>
+<img alt="_images/MOD-LCD3310-1_sch.png" src="_images/MOD-LCD3310-1_sch.png" />
+<p>This schematics however does not match what I typically found on other websites like this one for example:</p>
+<img alt="_images/nokialcd3310arduino.png" src="_images/nokialcd3310arduino.png" />
+<p>This is (probably becasue) the UEXT module defines that
+&#8220;The I 2 C signals (SDA and SCL) of host&#8217;s UEXT are pulled-up with resistors&#8221; in it&#8217;s <a class="reference external" href="https://www.olimex.com/Products/Modules/UEXT/resources/UEXT_rev_B.pdf">UEXT manual</a></p>
+<p>The LIME board indeed has this same behaviour</p>
+<img alt="_images/lime_gpio1.png" src="_images/lime_gpio1.png" />
+<p>Using the Lime schematics, the schematics of the Lime A10-LIME-UEXT and the schematics of the LCD3310 board I was able to draw
+&#8220;DaveCAD&#8221; style how I wanted the connection to be and I was albe to start prototyping the PCB</p>
+<p>In the table bellow shows how I (in the end) ended up connecting the wires to the GPIO1 connector of the UEXT module.
+It is lacking a few pullup&#8217;s as we will see later.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="14%" />
+<col width="5%" />
+<col width="23%" />
+<col width="18%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">GROUP</th>
+<th class="head">FUNCTION</th>
+<th class="head">PIN</th>
+<th class="head">GPIO1 NAME</th>
+<th class="head">GPIO 1 PIN</th>
+<th class="head">SoC GPIO function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LCD</td>
+<td>RST</td>
+<td>1</td>
+<td>PB20</td>
+<td>32</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>LCD</td>
+<td>CE</td>
+<td>2</td>
+<td>GND</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>LCD</td>
+<td>DC</td>
+<td>3</td>
+<td>PB21</td>
+<td>30</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>LCD</td>
+<td>DIN</td>
+<td>4</td>
+<td>MOSI (SPI II)</td>
+<td>37</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>LCD</td>
+<td>CLK</td>
+<td>5</td>
+<td>CLK (SPI II)</td>
+<td>35</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>LCD</td>
+<td>VCC</td>
+<td>6</td>
+<td>3.3v</td>
+<td>3</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>LCD</td>
+<td>LIGHT</td>
+<td>7</td>
+<td>GP10</td>
+<td>25</td>
+<td>202</td>
+</tr>
+<tr class="row-odd"><td>LCD</td>
+<td>GND</td>
+<td>8</td>
+<td>GND</td>
+<td>2</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SW</td>
+<td>SW1</td>
+<td>1</td>
+<td>PG7</td>
+<td>19</td>
+<td>199</td>
+</tr>
+<tr class="row-odd"><td>SW</td>
+<td>SW2</td>
+<td>1</td>
+<td>PG8</td>
+<td>21</td>
+<td>200</td>
+</tr>
+<tr class="row-even"><td>SW</td>
+<td>SW3</td>
+<td>1</td>
+<td>PG9</td>
+<td>23</td>
+<td>201</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="the-proto-pcb">
+<h2>The proto PCB<a class="headerlink" href="#the-proto-pcb" title="Permalink to this headline">¶</a></h2>
+<p>I started by testing how the components should fit also was drawing schematics to attach the hardware. I was lacking
+the connector at that time and was playing with the idea to directly solder the wires to the pin header of the GPIO port.
+This was supposed to be a quick and easy side project and I wanted to deliver something working by the end of the week-end.</p>
+<p>Fitting the components</p>
+<img alt="_images/9_proto_pcb_fit.jpg" src="_images/9_proto_pcb_fit.jpg" />
+<p>After cuting and placing the components I started wireing the PBC and I ended up with something like this</p>
+<img alt="_images/3_proto_closeup.jpg" src="_images/3_proto_closeup.jpg" />
+</div>
+<div class="section" id="lcd-bringup">
+<h2>LCD bringup<a class="headerlink" href="#lcd-bringup" title="Permalink to this headline">¶</a></h2>
+<p>Olimex has a great github repository where you can find all the schematics and sample source
+code for many devices and modules.</p>
+<p>Once the Lime cable arrived I was time to prototype do the hardware brindup and see if my plan worked.</p>
+<img alt="_images/2_proto_and_schematics.jpg" src="_images/2_proto_and_schematics.jpg" />
+<p>My work started by searching for sample code to talk to the LCD module and I was lucky finding the <a class="reference external" href="https://github.com/OLIMEX/OLINUXINO/tree/master/SOFTWARE/A20/A20-OLinuXino-Micro%20with%20MOD-LCD3310">A20 MOD-LCD3310</a> sample code this code
+depends on SPIDEV being present (see how I enabled this in <a class="reference internal" href="sw_install.html"><em>Software install</em></a>.)</p>
+<p>The first thing to test was the power. I attached a multimeter to the gnd/3.3V pin and saw it was 3.3.v</p>
+<p>The second thing was to test the backlight (not really but it sounds cool):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher:/sys/class/gpio# cd /sys/class/gpio/
+root@flasher:/sys/class/gpio# echo 202 &gt; export
+root@flasher:/sys/class/gpio# cd gpio202
+root@flasher:/sys/class/gpio/gpio202# echo out &gt; direction
+root@flasher:/sys/class/gpio/gpio202# echo 1 &gt; value
+</pre></div>
+</div>
+<p>What really happend is that I compiled the <a class="reference external" href="https://github.com/OLIMEX/OLINUXINO/tree/master/SOFTWARE/A20/A20-OLinuXino-Micro%20with%20MOD-LCD3310">A20 MOD-LCD3310</a> sample code on the LIME and that things where not working. I did a few things.
+First I went to <a class="reference external" href="http://technologia-incognita.nl/">my hackerspace</a> to look at the signals using an oscilloscope. Using that I was able to determine that all signals where doing
+mostly what I expected from them(e.g. SPI clock and data doing thing at the right time, the chip select working). The device however wat not showing
+any sign of life. The clock signal however did not look good (e.g. not sharp)</p>
+<p>To validate the screen was indeed also working on 3.3v (I only tested it on a 5v arduino) I plugged the display on a 3.3v arduino and ran some sample code
+to use the display:</p>
+<img alt="_images/proto_arduino.jpg" src="_images/proto_arduino.jpg" />
+<p>Next I hoocked up my saleae logic analyzer to the display and started comparing the working sample and the sample using the Lime board.</p>
+<img alt="_images/saleae_logic_running.png" src="_images/saleae_logic_running.png" />
+<p>I soon discovered that the <a class="reference external" href="https://github.com/OLIMEX/OLINUXINO/tree/master/SOFTWARE/A20/A20-OLinuXino-Micro%20with%20MOD-LCD3310">A20 MOD-LCD3310</a> sample code was using the wrong SPI mode (namely 3 instead of 0). After fixing this I started seeing thing on the display</p>
+<img alt="_images/proto_lcd_working_on_lime.jpg" src="_images/proto_lcd_working_on_lime.jpg" />
+<p>The screen however did still have some problems. For example the screen data slowly was getting corrupted</p>
+<img alt="_images/proto_lcd_working_on_lime_weirdness.jpg" src="_images/proto_lcd_working_on_lime_weirdness.jpg" />
+<p>This problem I still need to debug but while trying to debug the problem I found that the problem did not appear while the logic analyser was plugged in.
+For now I &#8220;discovered&#8221; that adding a pulldown from SCK to GND mostly solves the problem. Is this a drive strenght issue or something else I don&#8217;t know.
+I for now move on to the next part of the project. While I would like to get a 100% working prototype I can either add non populated resistors or patch the boards
+when ready.</p>
+<img alt="_images/proto_lcd_working_on_lime_weirdness_fix.jpg" src="_images/proto_lcd_working_on_lime_weirdness_fix.jpg" />
+</div>
+<div class="section" id="button-bringup">
+<h2>Button bringup<a class="headerlink" href="#button-bringup" title="Permalink to this headline">¶</a></h2>
+<p>After determining the possible GPIO canditates to use for the GPIO buttons
+I played around witht the GPIO library that is also found in the A20 sample code.
+The buttons worked right away.</p>
+<p>modified main.c from the LCD project:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>#include &quot;LCD3310.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &quot;gpio_lib.h&quot;
+
+#define BUT_A SUNXI_GPG(7)
+#define BUT_B SUNXI_GPG(8)
+#define BUT_C SUNXI_GPG(9)
+
+void setup_gpio(){
+        sunxi_gpio_set_cfgpin( BUT_A, SUNXI_GPIO_INPUT);
+        sunxi_gpio_set_cfgpin( BUT_B, SUNXI_GPIO_INPUT);
+        sunxi_gpio_set_cfgpin( BUT_C, SUNXI_GPIO_INPUT);
+
+};
+int main ()
+{
+        setup_gpio();
+        printf(&quot;GPIO number %i, %i and %i&quot;,BUT_A,BUT_B,BUT_C);
+        int a , b , c;
+        int counter=0;
+        int last_sum,sum;
+        char data[80];
+        char data2[80];
+        LCDInit();
+        //LCDContrast(0x70);
+        while(1 == 1){
+                a = sunxi_gpio_input(BUT_A);
+                b = sunxi_gpio_input(BUT_B);
+                c = sunxi_gpio_input(BUT_C);
+                sum = 1 * a + 2 * b + 3 * c;
+                if (sum != last_sum){
+                        counter++;
+                        snprintf(data,40,&quot;a=%i,b=%i,c=%i&quot;,a,b,c);
+                        snprintf(data2,40,&quot;%i   &quot;,counter);
+                        printf(&quot;%s\n&quot;,data);
+                        LCDStr(0, (unsigned char *)&quot;*** OLIMEX ***&quot;, 1);
+                        LCDStr(1, (unsigned char *)&quot;  OLinuXINO   &quot;, 0);
+                        LCDStr(2, data2,0);
+                        LCDStr(3, (unsigned char *)&quot;  MOD-LCD3310 &quot;, 0);
+                        LCDStr(4, data,0);
+                }
+
+                last_sum = sum;
+                usleep(10);
+        };
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="functional-prototype">
+<h2>Functional prototype<a class="headerlink" href="#functional-prototype" title="Permalink to this headline">¶</a></h2>
+<p>The result is a prototype that is functional</p>
+<video controls src="_static/videos/proto_hello.webm"></video></div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sw_install.html" class="btn btn-neutral float-right" title="Software install" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hw_selection_ui.html" class="btn btn-neutral" title="Hardware selection UI" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Kees Jongenburger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

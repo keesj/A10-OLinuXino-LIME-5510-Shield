@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hardware selection Board &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="next" title="Hardware selection UI" href="hw_selection_ui.html"/>
+        <link rel="prev" title="Index" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> A10-OLinuXino-LIME-5510-Shield
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Hardware selection Board</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#beaglebone-black">BeagleBone Black</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Raspberry Pi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-olinuxino-board-family">The OLinuXino board family</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-board-did-i-choose-and-why">What board did I choose and why</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">A10-OLinuXino-LIME-5510-Shield</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Hardware selection Board</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/hw_selection_board.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-selection-board">
+<h1>Hardware selection Board<a class="headerlink" href="#hardware-selection-board" title="Permalink to this headline">¶</a></h1>
+<p>The first step in the project was a part of hardware selection. Here I describe
+some considerations.</p>
+<p>I wanted a quick and easy project and wanted a run
+a batch of about 50 flashing devices. At that rate Money starts counting and
+investing a little more time on getting cost down can be beneficial.</p>
+<p>Also this being a small sideproject I wanted to use as much open hardware and
+software a possible. This allows me to write about what I learned but also,
+expecting so spend some evenings on the project, generally make me feel good.</p>
+<p>Having spent a considerable amount of time porting
+<a class="reference external" href="http://wiki.minix3.org/doku.php?id=developersguide:minixonarm">Minx3 on the BeagleBone Black</a> knowing that the rest of the world loves the
+<a class="reference external" href="https://www.raspberrypi.org/">Raspberry Pi</a> I also wanted to consider using <a class="reference external" href="https://www.olimex/com/">Olimex</a> hardware beacause of
+their open hardware ethics and <a class="reference external" href="http://keesj.github.io/A13-OlinuXino-playground/">my previous work on the A13</a>.</p>
+<div class="section" id="beaglebone-black">
+<h2>BeagleBone Black<a class="headerlink" href="#beaglebone-black" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/hp_black_sm.jpg" src="_images/hp_black_sm.jpg" />
+<p>The <a class="reference external" href="https://beagleboard.org/">BeagleBoard (TI) community</a> was one of the first real open source hardware
+platform. The documentation of the board in excellent and the SoC is VERY well
+documented and the community is professional. The device was there before the
+Raspberry Pi and starting the BeagleBone black the prices are comparable.</p>
+</div>
+<div class="section" id="id1">
+<h2>Raspberry Pi<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/pi_overhead2_1.jpg" src="_images/pi_overhead2_1.jpg" />
+<p><a class="reference external" href="https://www.raspberrypi.org/">Raspberry Pi</a> has taken over the world and has become the ducktape for small
+projects. It has a large, less professional user community base. It&#8217;s hardware is
+not open nor it there good documentation of the BoardCom SoC. The good thing is
+that it is cheap and that every problem you will encouter has already been solved
+by somebody else. There are many modules/cases available and I don&#8217;t have much
+experience with the PI. The Raspberry Pi also has know limitations in terms of
+<a class="reference external" href="https://www.raspberrypi.org/documentation/hardware/raspberrypi/usb/README.md">USB capabilities</a></p>
+</div>
+<div class="section" id="the-olinuxino-board-family">
+<h2>The OLinuXino board family<a class="headerlink" href="#the-olinuxino-board-family" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/A10-OLinuXino-LIME-1.jpg" src="_images/A10-OLinuXino-LIME-1.jpg" />
+<p>Olimex produces <a class="reference external" href="https://www.olimex.com/Products/OLinuXino/open-source-hardware">open hardware design boards</a> that generally are well priced. I
+have  been following their work for quite a while and do like the way they
+explain some design consideration in their work. They have different boards and
+are not backed by a large company e.g. they are the underdog here. The
+<a class="reference external" href="https://www.olimex.com/Products/OLinuXino/A10/A10-OLinuXino-LIME/open-source-hardware">A10-OLinuXino-LIME</a> pictured above is the device I have chosen in the end
+for this project.</p>
+<p><a class="reference external" href="https://www.olimex.com/Products/OLinuXino/open-source-hardware">https://www.olimex.com/Products/OLinuXino/open-source-hardware</a></p>
+</div>
+<div class="section" id="what-board-did-i-choose-and-why">
+<h2>What board did I choose and why<a class="headerlink" href="#what-board-did-i-choose-and-why" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you make choices based on experience and sometimes you do some research before
+you start you project. In this case I needed something fast and needed (as usual?) to make
+choices without researching every topic. Questions I asked myself where:</p>
+<ul class="simple">
+<li>What is it going to cost</li>
+<li>Are the Hardware/Software and Soc open</li>
+<li>Is it easy to find out the status of the project (kernel/debian)</li>
+<li>Does it have a USB host port and possibly some form of networking</li>
+<li>Does it have a display</li>
+<li>Can the usb port power the attached device</li>
+</ul>
+<p>Will any of the boards tick all the boxes? Bellow is a table I made (after the fact) on some things I considered
+while shopping around for a board.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="4%" />
+<col width="6%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="15%" />
+<col width="15%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Board</th>
+<th class="head">Price</th>
+<th class="head">Case</th>
+<th class="head">Mainline Kernel</th>
+<th class="head">Open Hardware</th>
+<th class="head">Documented Soc</th>
+<th class="head">Proper USB</th>
+<th class="head">Proper OS</th>
+<th class="head">Ways to extend</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://www.antratek.nl/beaglebone-black-rev-c-2774">BBB (black)</a></td>
+<td>59,50</td>
+<td><a class="reference external" href="https://www.conrad.nl/nl/beaglebone-black-behuizing-1593hambonegy-grijs-792904.html">6,29</a></td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>musb(not great)</td>
+<td>Unclear to me</td>
+<td>Capes</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://www.antratek.nl/beaglebone-green">BBB (Green)</a></td>
+<td>42,95</td>
+<td><a class="reference external" href="https://www.conrad.nl/nl/beaglebone-black-behuizing-1593hambonegy-grijs-792904.html">6,29</a></td>
+<td>No</td>
+<td>Yes</td>
+<td>yes</td>
+<td>musb(not great)</td>
+<td>Unclear to me</td>
+<td>Capes</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://www.antratek.nl/raspberry-pi-2-model-b">RyPi</a></td>
+<td>34,95</td>
+<td><a class="reference external" href="https://www.sossolutions.nl/b-behuizing-eigen-merk-aanrader-trans?fee=4&amp;fep=82?utm_source=shopping&amp;utm_medium=adwords&amp;utm_term=B+%20en%202B%20Behuizing%20eigen%20merk%20%28aanrader%29%20-%20TRANSPARANT&amp;utm_campaign=shopping&amp;gclid=CPSzg_aH0MsCFdQaGwodZ0gHRA">6,95</a></td>
+<td>No</td>
+<td>Nope</td>
+<td>Nope</td>
+<td>not great</td>
+<td>Yes</td>
+<td>Lots of capes</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://www.antratek.nl/a10-olinuxino-lime">Lime</a></td>
+<td>30,00</td>
+<td><a class="reference external" href="https://www.antratek.nl/a10-olinuxino-lime-box">5,00</a></td>
+<td>Yes!!</td>
+<td>Yes</td>
+<td>Nope</td>
+<td>yes</td>
+<td><a class="reference external" href="https://wiki.debian.org/InstallingDebianOn/Allwinner">Official Debian</a></td>
+<td>UEXT/GPIO</td>
+</tr>
+</tbody>
+</table>
+<p>I also ordered a smaller <a class="reference external" href="https://www.olimex.com/Products/OLinuXino/RT5350F/RT5350F-OLinuXino-EVB/open-source-hardware">MIPS based board</a>/OpenWRT from Olimex to give it a try.
+The BeagleBoard did not make it mainly because I have been using it as my main
+mail server for the last couple of years and that the debian install on there
+is getting so old I can&#8217;t upgrade it. When going to the beagleboard website it
+is just hard to understand what the status is of the project. The USB controller
+while functional has know issues. Next I guess I also wanted something new.</p>
+<p>I will at some point need to look into the Raspberry Pi but for this project I need
+to power phones while flashing the software is it not suitable. It also does not
+match what I want from hardware (e.g. to be open). I therefore looked at the
+Olimex boards (ranging from the A13, the A10 and the A20). the Lime is a really
+small board and the cheapest one was the A10 and it had a nice case.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hw_selection_ui.html" class="btn btn-neutral float-right" title="Hardware selection UI" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Index" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Kees Jongenburger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

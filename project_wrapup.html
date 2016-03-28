@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Project Wrapup &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="prev" title="Software install" href="sw_install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> A10-OLinuXino-LIME-5510-Shield
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Project Wrapup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uext">UEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-tree">Device tree</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">A10-OLinuXino-LIME-5510-Shield</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Project Wrapup</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/project_wrapup.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="project-wrapup">
+<h1>Project Wrapup<a class="headerlink" href="#project-wrapup" title="Permalink to this headline">¶</a></h1>
+<p>Now the project is mostly done I must say I am quite happy with my choice of the
+Olimex board. It provided a cheap &#8220;industry grade&#8221; professional building block
+for small &#8220;embedded&#8221; project.</p>
+<p>Debian Jessie is officially supported on the board I just wish Olimex provided
+that version by default as I lost quite some time doing the upgrade.
+The AllWinner chipset has very poor documentation and it would
+be nearly impossible to get something like Minix3 running on it. Therefore the
+SoC does not match what I would like from a system on chip. Still that said the
+community around the soc (&#64;TODO sunx-??? irc freenode and website) did so much
+work on the chip that for the first time in my life I was able to download &amp;
+build a mainline &#8220;Linus&#8221; vanilla kernel and get it booting without any patches.
+That said not all hardware is enabled by default and enabling hardware is pretty
+hard because it all depends on modifying the device tree.</p>
+<p>I have been lucky with the SPI implementation and the choice of hardware.
+The mainline kernel for the A10 has a limitation of 64 bytes spi packets and had
+I used a real LCD screen I would have got into trouble.</p>
+<div class="section" id="uext">
+<h2>UEXT<a class="headerlink" href="#uext" title="Permalink to this headline">¶</a></h2>
+<p>The UEXT extension model of Olimex remains simple and effective. Put a few low
+pin count interfaces on a module (SPI/I2C and and UART) and power and make sure
+the pins can also be accessed as GPIO. For the Lime board this helped me choose
+what pins to use for the LCD display. I was also able to look at schematics
+of for example the Nokia 3310 UEXT module sold by olimex. There are a few weird
+things with it the pull up resistors on pins BP21 BP20 BP19 and PB18.</p>
+<img alt="_images/lime_gpio1.png" src="_images/lime_gpio1.png" />
+</div>
+<div class="section" id="device-tree">
+<h2>Device tree<a class="headerlink" href="#device-tree" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="sw_install.html" class="btn btn-neutral" title="Software install" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Kees Jongenburger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
