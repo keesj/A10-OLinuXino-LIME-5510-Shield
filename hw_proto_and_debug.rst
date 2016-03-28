@@ -211,6 +211,17 @@ modified main.c from the LCD project::
 	}
 
 
+
+
+Functional prototype
+--------------------
+
+The result is a prototype that is functional
+
+.. raw:: html
+
+   <video controls src="_static/videos/proto_hello.webm"></video> 
+
 .. _my hackerspace: http://technologia-incognita.nl/
 
 .. _A20 MOD-LCD3310: https://github.com/OLIMEX/OLINUXINO/tree/master/SOFTWARE/A20/A20-OLinuXino-Micro%20with%20MOD-LCD3310
