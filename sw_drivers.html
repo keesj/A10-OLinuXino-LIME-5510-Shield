@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  <title>Software drivers &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
   
 
   
@@ -31,7 +30,9 @@
   
 
   
-    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/> 
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="next" title="Project Wrapup" href="project_wrapup.html"/>
+        <link rel="prev" title="Software install" href="sw_install.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,13 +81,17 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_design.html">Hardware design</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sw_drivers.html">Software drivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Software drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lcd-as-framebuffer-driver">LCD as framebuffer driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#button-as-key-events">Button as key events</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
 </ul>
 
@@ -110,7 +115,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -118,9 +123,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>Software drivers</li>
       <li class="wy-breadcrumbs-aside">
         
+          
+            <a href="_sources/sw_drivers.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -130,17 +137,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <div class="section" id="software-drivers">
+<h1>Software drivers<a class="headerlink" href="#software-drivers" title="Permalink to this headline">¶</a></h1>
+<p>Until now I have been using a modified version of the A20 olimex sample code.
+this results in a quite messy set of scripts and tools used to grab input
+from the GPIO and display to the user by invoking binaries.</p>
+<p>More work is needed to make the hardware follow the linux driver model</p>
+<div class="section" id="lcd-as-framebuffer-driver">
+<h2>LCD as framebuffer driver<a class="headerlink" href="#lcd-as-framebuffer-driver" title="Permalink to this headline">¶</a></h2>
+<p>TODO:
+The mainline kernel as in tree (but staging) support for the Nokia 3310 Display in
+the form of fbtft see drivers/staging/fbtft or the <a class="reference external" href="https://github.com/notro/fbtft/wiki">fbtft wiki</a>.</p>
+<p>We need to start using this driver.</p>
+</div>
+<div class="section" id="button-as-key-events">
+<h2>Button as key events<a class="headerlink" href="#button-as-key-events" title="Permalink to this headline">¶</a></h2>
+<p>TODO:
+We need to configure kernel to make the GPIO pins generate key evens (UEVENTS).</p>
+</div>
 </div>
 
 
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="project_wrapup.html" class="btn btn-neutral float-right" title="Project Wrapup" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sw_install.html" class="btn btn-neutral" title="Software install" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

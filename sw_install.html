@@ -31,8 +31,8 @@
 
   
     <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
-        <link rel="next" title="Project Wrapup" href="project_wrapup.html"/>
-        <link rel="prev" title="Hardware prototype and debug" href="hw_proto_and_debug.html"/> 
+        <link rel="next" title="Software drivers" href="sw_drivers.html"/>
+        <link rel="prev" title="Hardware design" href="hw_design.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,6 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_design.html">Hardware design</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Software install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#attaching-serial">Attaching serial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#debian-upgrade">Debian upgrade</a></li>
@@ -99,15 +100,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-uboot-paramters">Setting up the uboot paramters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#u-boot-hackery">u-boot hackery</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ssh-cleanup">SSH cleanup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh-remove-password-login">SSH remove password login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-udev-rules">Adding udev rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#syncing-builds">Syncing builds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#date-sync">Date sync</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#systemd-setup">Systemd setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#switch-to-systemd-base-networking">Switch to systemd base networking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-a-system-based-service">Creating a system based service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#calling-home">Calling home</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#auto-ssh">Auto SSH</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="sw_drivers.html">Software drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
 </ul>
 
@@ -722,6 +725,16 @@ Starting kernel ...
 dpkg-reconfigure openssh-server</p>
 <p>Set hostname</p>
 </div>
+<div class="section" id="ssh-remove-password-login">
+<h2>SSH remove password login<a class="headerlink" href="#ssh-remove-password-login" title="Permalink to this headline">¶</a></h2>
+<p>Following <a class="reference external" href="http://support.hostgator.com/articles/specialized-help/technical/how-to-disable-password-authentication-for-ssh">How to Disable Password Authentication for SSH</a></p>
+<p>edit /etc/ssh/sshd_config:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>ChallengeResponseAuthentication no
+PasswordAuthentication no
+UsePAM no `
+</pre></div>
+</div>
+</div>
 <div class="section" id="adding-udev-rules">
 <h2>Adding udev rules<a class="headerlink" href="#adding-udev-rules" title="Permalink to this headline">¶</a></h2>
 <p>Allow access to usb fastboot for some additional devices. in
@@ -885,11 +898,13 @@ systemctl status network-online.target
 </pre></div>
 </div>
 </div>
-<div class="section" id="calling-home">
-<h2>Calling home<a class="headerlink" href="#calling-home" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="auto-ssh">
+<h2>Auto SSH<a class="headerlink" href="#auto-ssh" title="Permalink to this headline">¶</a></h2>
+<p>Calling home</p>
 <p>Because most devices do no have a UI it is nice if devices on the network can &#8220;call home&#8221;.
 Initiall this was just done using a ssh command pushing the IP address on the central server
 but getting shell acccess is so much nicer hence we added a reverse tunnel functionality.</p>
+<p>We took some care to not allow different machines to connect the the server but some work remains to be done.</p>
 <p>We found some hits on <a class="reference external" href="https://gist.github.com/thomasfr/9707568">thomasfr&#8217;s gist</a> but used a silghtly different approach. After installing autossh
 we created a new local user called autossh and configured it&#8217;s .ssh/config to allow port forwarding:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>autossh@flasher:~$ cat .ssh/config
@@ -931,10 +946,10 @@ WantedBy=graphical.target
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="project_wrapup.html" class="btn btn-neutral float-right" title="Project Wrapup" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="sw_drivers.html" class="btn btn-neutral float-right" title="Software drivers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="hw_proto_and_debug.html" class="btn btn-neutral" title="Hardware prototype and debug" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="hw_design.html" class="btn btn-neutral" title="Hardware design" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
