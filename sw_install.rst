@@ -617,6 +617,20 @@ dpkg-reconfigure openssh-server
 
 Set hostname
 
+SSH remove password login
+-------------------------
+
+Following `How to Disable Password Authentication for SSH`_
+
+.. _How to Disable Password Authentication for SSH: http://support.hostgator.com/articles/specialized-help/technical/how-to-disable-password-authentication-for-ssh
+
+edit /etc/ssh/sshd_config::
+
+	ChallengeResponseAuthentication no
+	PasswordAuthentication no
+	UsePAM no `
+
+
 
 
 
@@ -808,12 +822,17 @@ sync.sh::
 
 
 
+Auto SSH
+--------
+
 Calling home
-------------
 
 Because most devices do no have a UI it is nice if devices on the network can "call home".
 Initiall this was just done using a ssh command pushing the IP address on the central server
 but getting shell acccess is so much nicer hence we added a reverse tunnel functionality.
+
+We took some care to not allow different machines to connect the the server but some work remains to be done.
+
 
 We found some hits on `thomasfr's gist`_ but used a silghtly different approach. After installing autossh
 we created a new local user called autossh and configured it's .ssh/config to allow port forwarding::
@@ -828,8 +847,6 @@ With this config is is possible from the flasher device to
 connect to the remove server (where we have setup keys) and create
 a listening socker on port 4321 on the remote server(We will need to 
 tweak this port number for different devices)
-
-
 
 .. _thomasfr's gist: https://gist.github.com/thomasfr/9707568
 

@@ -99,8 +99,12 @@ After cuting and placing the components I started wireing the PBC and I ended up
 .. image:: images/proto/3_proto_closeup.jpg
 
 
+Case design
+-----------
 
+This prototype was done in a week-end
 
+.. image:: images/proto/1_proto_case_closed.jpg
 
 LCD bringup
 -----------
@@ -156,6 +160,7 @@ when ready.
 
 Button bringup
 --------------
+
 After determining the possible GPIO canditates to use for the GPIO buttons
 I played around witht the GPIO library that is also found in the A20 sample code. 
 The buttons worked right away.
