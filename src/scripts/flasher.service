@@ -1,0 +1,12 @@
+[Unit]
+Description=Fairpone flasher service
+# Start after the network is up (or not)
+After=network.target sync.service
+
+[Service]
+ExecStart=/usr/bin/python flasher
+WorkingDirectory=/root/flasher
+Restart=always
+
+[Install]
+WantedBy=graphical.target

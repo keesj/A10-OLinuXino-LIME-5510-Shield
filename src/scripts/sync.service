@@ -1,0 +1,12 @@
+[Unit]
+Description=Fairphone image sync service
+After=network-online.target
+Wants=network-online.target
+
+
+[Service]
+Type=oneshot
+ExecStart=/root/flasher/scripts/sync.sh
+
+[Install]
+WantedBy=graphical.target
