@@ -23,6 +23,7 @@ Contents:
    hw_selection_ui
    hw_proto_and_debug
    hw_design
+   hw_case 
    sw_install
    sw_drivers
    project_wrapup
