@@ -9,4 +9,4 @@ The project brings togteher quite a few things I learned in the past including 3
 and properly setting up a debian based system. 
 
 
-![Prototype hardware](https://raw.githubusercontent.com/keesj/A10-OLinuXino-LIME-5510-Shield/master/img/proto_IMG_20160228_214246.jpg)
+![Prototype hardware](https://raw.githubusercontent.com/keesj/A10-OLinuXino-LIME-5510-Shield/master/img/IMG_20160403_155331.jpg)
