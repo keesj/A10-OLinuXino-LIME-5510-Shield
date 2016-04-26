@@ -868,3 +868,10 @@ autossh systemd service::
 
 	[Install]
 	WantedBy=graphical.target
+
+
+Setting font: install kbd 
+
+http://www.linuxquestions.org/questions/slackware-14/changing-font-size-in-console-446288/
+setfont -v Uni2-Terminus12x6
+

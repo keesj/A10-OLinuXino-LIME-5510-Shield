@@ -14,28 +14,33 @@ The PCB design was to be done using `KiCAD`_ and using the shield template
 that was offered by `Olimex`_ on their website/git repo
 
 
-Software tools
---------------
-
-The machine used during the design was a slightly oder laptop running ubuntu (LTS)::
-
-	keesj@e540:~/projects/A10-OLinuXino-LIME-5510-Shield-gh-pages$ lsb_release -a
-	No LSB modules are available.
-	Distributor ID:	Ubuntu
-	Description:	Ubuntu 14.04.4 LTS
-	Release:	14.04
-	Codename:	trusty
-
-and I installed KiCAD from the PPA (the KiCAD version in ubuntu is outdated)
-
-/etc/apt/sources.list.d/js-reynaud-kicad-4-trusty.list::
-	deb http://ppa.launchpad.net/js-reynaud/kicad-4/ubuntu trusty main
-
-And the version can be seen here
-
-.. image:: images/ee/kicad_version.png
+Odering and choosing components.
+--------------------------------
+Until now we designed something with the components we where able to find but we did not have enough
+for out own project. With 3d printing 
 
 
+Software tools.
+---------------
+
+The machine used during the design was a slightly oder laptop running ubuntu (LTS) (10.04)
+and I installed KiCAD from the PPA (the KiCAD version in ubuntu is outdated) the version can be seen here
+
+.. image:: images/ee_design/kicad_version.png
+
+KiCAD development goes quite fast and in general things improve for the better. On problem I encountered
+an other project is that KiCAD is not always very backward compatible this can be quite a challenge when
+Using other people's code as I did for the shield. This time I was lucky.
+
+The flow of KiCAD and finding out where options and path need to be configured remains a constant quest
+but you need to at least do the following:
+
+ - Use the library wizard to download files from the KiCAD github pages (the new library format with directory names that end with .pretty)
+ - Configure library path AND add libraries to your project to make it complete
+ - Possibly convert old libraries to the new format
+ 
+Tasks.
+------
 
 .. _KiCAD: http://kicad-pcb.org/
 .. _Olimex: http://olimex.com/

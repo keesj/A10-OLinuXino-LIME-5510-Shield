@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_design.html">Hardware design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_case.html">Creating the case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Software drivers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#lcd-as-framebuffer-driver">LCD as framebuffer driver</a></li>
@@ -145,15 +146,411 @@ from the GPIO and display to the user by invoking binaries.</p>
 <p>More work is needed to make the hardware follow the linux driver model</p>
 <div class="section" id="lcd-as-framebuffer-driver">
 <h2>LCD as framebuffer driver<a class="headerlink" href="#lcd-as-framebuffer-driver" title="Permalink to this headline">¶</a></h2>
+<p>Enable BT_TFT in kernel config (first enable staging)</p>
+<p>also enable pcd8544:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>{
+                .name = &quot;nokia3310&quot;,
+                .spi = &amp;(struct spi_board_info) {
+                        .modalias = &quot;fb_pcd8544&quot;,
+                        .max_speed_hz = 400000,
+                        .mode = SPI_MODE_0,
+                        .platform_data = &amp;(struct fbtft_platform_data) {
+                                .display = {
+                                        .buswidth = 8,
+                                },
+                                .gpios = (const struct fbtft_gpio []) {
+                                        { &quot;reset&quot;, 25 },
+                                        { &quot;dc&quot;, 24 },
+                                        { &quot;led&quot;, 23 },
+                                        {},
+                                },
+                        }
+                }
+        }
+
+      MODULE_ALIAS(&quot;spi:&quot; DRVNAME);
+      MODULE_ALIAS(&quot;spi:pdc8544&quot;);
+</pre></div>
+</div>
+<p>pretty nice wiki but pretty much targetting rpi
+<a class="reference external" href="https://github.com/notro/fbtft/wiki">https://github.com/notro/fbtft/wiki</a></p>
+<p>Looking at some examples we need to add a slave node attached to the
+spi bus and make it &#8220;compatible with &#8220;pdc8544&#8221;. next we need to configure
+the data command pin and led pin.</p>
+<p><a class="reference external" href="https://github.com/notro/fbtft/blob/master/dts/rpi.dts">https://github.com/notro/fbtft/blob/master/dts/rpi.dts</a></p>
+<p>Hence we need to configure the reset , dc and led gpio (next to the SPI)</p>
 <p>TODO:
 The mainline kernel as in tree (but staging) support for the Nokia 3310 Display in
 the form of fbtft see drivers/staging/fbtft or the <a class="reference external" href="https://github.com/notro/fbtft/wiki">fbtft wiki</a>.</p>
 <p>We need to start using this driver.</p>
+<p>device tree changes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>&amp;spi2 {
+        pinctrl-names = &quot;default&quot;;
+        pinctrl-0 = &lt;&amp;spi2_pins_a&gt;,
+                    &lt;&amp;spi2_cs0_pins_a&gt;;
+        status = &quot;okay&quot;;
+        nokia3310@1 {
+                compatible = &quot;philips,pdc8544&quot;;
+                rotate = &lt;0&gt;;
+                reg = &lt;0&gt;;
+                spi-max-frequency = &lt;25000000&gt;;
+                reset-gpios = &lt;&amp;pio 1 20&gt;; /* PB20 */
+                dc-gpios    = &lt;&amp;pio 1 21&gt;; /* PB21 */
+                led-gpios    = &lt;&amp;pio 6 10&gt;;/* GP10 */
+        };
+};
+</pre></div>
+</div>
+<p>log output:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[    0.842047] Freeing initrd memory: 12308K (cf3fb000 - d0000000)
+[    1.744089] fbtft_of_value: rotate = 0
+[    1.747959] fb_pcd8544 spi32765.0: buswidth is not set
+[    1.753129] fb_pcd8544: probe of spi32765.0 failed with error -22
+</pre></div>
+</div>
+<p>Base on this input:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>&amp;spi2 {
+        pinctrl-names = &quot;default&quot;;
+        pinctrl-0 = &lt;&amp;spi2_pins_a&gt;,
+                    &lt;&amp;spi2_cs0_pins_a&gt;;
+        status = &quot;okay&quot;;
+        nokia3310@1 {
+                compatible = &quot;philips,pdc8544&quot;;
+
+                spi-max-frequency = &lt;25000000&gt;;
+
+                rotate = &lt;0&gt;;
+                reg = &lt;0&gt;;
+                buswidth = &lt;8&gt;;
+
+                reset-gpios = &lt;&amp;pio 1 20 GPIO_ACTIVE_HIGH&gt;; /* PB20 */
+                dc-gpios    = &lt;&amp;pio 1 21 GPIO_ACTIVE_HIGH&gt;; /* PB21 */
+                led-gpios    = &lt;&amp;pio 6 10 GPIO_ACTIVE_HIGH&gt;;/* GP10 */
+        };
+};
+</pre></div>
+</div>
+<p>second modification:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>Bubhid: USB HID core driver
+[    1.744115] fbtft_of_value: buswidth = 8
+[    1.748059] fbtft_of_value: rotate = 0
+[    1.873045] fb_pcd8544 spi32765.0: SPI transfer failed: -22
+[    1.878696] spi_master spi32765: failed to transfer one message from queue
+[    1.885565] fb_pcd8544 spi32765.0: write failed and returned: -22
+[    1.891683] fb_pcd8544 spi32765.0: fbtft_update_display: write_vmem failed to update display buffer
+[    1.903614] Console: switching to colour frame buffer device 10x6
+[    1.909892] graphics fb0: fb_pcd8544 frame buffer, 84x48, 7 KiB video memory, 0 KiB DMA buffer memory, fps=20, spi32765.0 at 25 MHz
+[    1.923068] NET: Registered protocol family 17
+[    1.927582] can: controller area network core (rev 20120528 abi 9)
+[    1.933829] NET: Registered protocol family 29
+[    1.938297] can: raw protocol (rev 20120528)
+[    1.942569] can: broadcast manager protocol (rev 20120528 t)
+[    1.948251] can: netlink gateway (rev 20130117) max_hops=1
+[    1.954019] Key type dns_resolver registered
+[    1.958927] cpufreq: cpufreq_online: CPU0: Running at unlisted freq: 1008000 KHz
+[    1.966949] cpufreq: cpufreq_online: CPU0: Unlisted initial frequency changed to: 912000 KHz
+[    1.975659] Registering SWP/SWPB emulation handler
+[    1.980941] fb_pcd8544 spi32765.0: SPI transfer failed: -22
+[    1.986563] spi_master spi32765: failed to transfer one message from queue
+[    1.993433] fb_pcd8544 spi32765.0: write failed and returned: -22
+[    1.999537] fb_pcd8544 spi32765.0: fbtft_update_display: write_vmem failed to update display buffer
+[    2.043104] mmc0: host does not support reading read-only switch, assuming write-enable
+[    2.053370] mmc0: new high speed SDHC card at address 27ac
+[    2.059424] mmcblk0: mmc0:27ac SD04G 3.75 GiB
+[    2.065047]  mmcblk0: p1 p2
+[    2.075809] ahci-sunxi 1c18000.sata: controller can&#39;t do PMP, turning off CAP_PMP
+[    2.083325] ahci-sunxi 1c18000.sata: SSS flag set, parallel bus scan disabled
+[    2.090509] ahci-sunxi 1c18000.sata: AHCI 0001.0100 32 slots 1 ports 3 Gbps 0x1 impl platform mode
+[    2.099483] ahci-sunxi 1c18000.sata: flags: ncq sntf stag pm led clo only pio slum part ccc
+[    2.109008] scsi host0: ahci-sunxi
+[    2.112760] ata1: SATA max UDMA/133 mmio [mem 0x01c18000-0x01c18fff] port 0x100 irq 26
+[    2.121086] ehci-platform 1c14000.usb: EHCI Host Controller
+[    2.126722] ehci-platform 1c14000.usb: new USB bus registered, assigned bus number 1
+[    2.134599] ehci-platform 1c14000.usb: irq 22, io mem 0x01c14000
+[    2.155888] fb_pcd8544 spi32765.0: SPI transfer failed: -22
+[    2.161465] spi_master spi32765: failed to transfer one message from queue
+[    2.168357] fb_pcd8544 spi32765.0: write failed and returned: -22
+[    2.174444] fb_pcd8544 spi32765.0: fbtft_update_display: write_vmem failed to update display buffer
+[    2.183534] ehci-platform 1c14000.usb: USB 2.0 started, EHCI 1.00
+[    2.190590] hub 1-0:1.0: USB hub found
+[    2.194381] hub 1-0:1.0: 1 port detected
+[    2.199084] ehci-platform 1c1c000.usb: EHCI Host Controller
+</pre></div>
+</div>
+<p>Tyring to validate the hint I got from IRC I am hitting the 64 bytes limit:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>diff --git a/drivers/staging/fbtft/fb_pcd8544.c b/drivers/staging/fbtft/fb_pcd8544.c
+index a6b4332..e9b6c2a 100644
+--- a/drivers/staging/fbtft/fb_pcd8544.c
++++ b/drivers/staging/fbtft/fb_pcd8544.c
+@@ -129,7 +129,8 @@ static int write_vmem(struct fbtft_par *par, size_t offset, size_t len)
+
+        /* Write data */
+        gpio_set_value(par-&gt;gpio.dc, 1);
+-       ret = par-&gt;fbtftops.write(par, par-&gt;txbuf.buf, 6 * 84);
++       //ret = par-&gt;fbtftops.write(par, par-&gt;txbuf.buf, 6 * 84);
++       ret = par-&gt;fbtftops.write(par, par-&gt;txbuf.buf, 60);
+        if (ret &lt; 0)
+                dev_err(par-&gt;info-&gt;device, &quot;write failed and returned: %d\n&quot;,
+                        ret);
+</pre></div>
+</div>
+<p>IRC:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>13:34 -!- mozzwald [~www.mozzw@c-67-176-182-49.hsd1.il.comcast.net] has joined #linux-sunxi
+13:35 &lt; keesj&gt; does: spi_master spi32765: failed to transfer one message from queue  ring a bell?
+13:35 &lt; keesj&gt; I am trying to enable the fbtft (staging) driver on an A10-Lime board
+13:36 &lt; keesj&gt; (full paste here http://paste.ubuntu.com/15827945/ )
+13:37 &lt; keesj&gt; I previously tested the hardware using spidev (also on spi32765.1)
+13:45 &lt; lennyraposo&gt; see you all later folks
+13:45 &lt; lennyraposo&gt; ;)
+13:45 -!- lennyraposo [~administr@CPE84948c5c33d1-CM84948c5c33d0.cpe.net.cable.rogers.com] has quit [Quit: Leaving.]
+13:47 &lt; keesj&gt; can it be that I am finally hitting the 64 bytes limit?
+13:51 &lt; keesj&gt; I think I am
+13:52 &lt; plaes&gt; keesj: yes you are
+13:52 &lt; plaes&gt; I had same issue
+13:53 &lt; plaes&gt; keesj: feel free to steal the patches: https://github.com/plaes/linux/commits/plaes-wip-stuff
+13:55 &lt; keesj&gt; any speofic commit ? like https://github.com/plaes/linux/commit/c39fb6ae72a2f274595f3ad48ed0f02068789834 or is there more
+               stuff I need to fetch?
+13:56 &lt; keesj&gt; there is more good steal stuff there
+</pre></div>
+</div>
+<p>code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>git remote add plaes https://github.com/plaes/linux.git
+git fetch plaes
+git diff plaes/plaes-wip-stuff
+</pre></div>
+</div>
+<p>steal:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>keesj@e540:~/projects/olimex/linux-new$ git cherry-pick 0b931d5a8b40725540a3ad23f581cb11cf3a7739
+[master 7eb9f6a] spi: sun4i: add DMA support
+ Author: Emilio López &lt;emilio@elopez.com.ar&gt;
+ Date: Fri May 30 17:27:28 2014 -0300
+ 1 file changed, 128 insertions(+), 12 deletions(-)
+keesj@e540:~/projects/olimex/linux-new$ git cherry-pick c39fb6ae72a2f274595f3ad48ed0f02068789834
+[master 5a3cc75] ARM: sunxi: spi: add notice about SPI FIFO limit.
+ Author: Michal Suchanek &lt;hramrach@gmail.com&gt;
+ Date: Mon May 4 12:23:59 2015 +0200
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+</pre></div>
+</div>
+<p>trying some python code to access the framebuffer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>apt-get install python-pygame
+reading :
+
+export SDL_VIDEODRIVER=directfb
+root@flasher-06:~# python game.py
+commandline read: python
+commandline read: game.py
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~| DirectFB 1.2.10 |~~~~~~~~~~~~~~~~~~~~~~~~~~
+        (c) 2001-2008  The world wide DirectFB Open Source Community
+        (c) 2000-2004  Convergence (integrated media) GmbH
+      ----------------------------------------------------------------
+
+(*) DirectFB/Core: Single Application Core. (2014-10-21 10:21)
+(*) Direct/Thread: Started &#39;VT Switcher&#39; (-1) [CRITICAL OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) Direct/Thread: Started &#39;Keyboard Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: Keyboard 0.9 (directfb.org)
+(*) Direct/Thread: Started &#39;Linux Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: gpio_keys (1) 0.1 (directfb.org)
+(*) Direct/Thread: Started &#39;Linux Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: axp20x-pek (2) 0.1 (directfb.org)
+(*) DirectFB/Graphics: Generic Software Rasterizer 0.6 (directfb.org)
+(*) DirectFB/Core/WM: Default 0.3 (directfb.org)
+(*) FBDev/Surface: Allocated 84x48 16 bit RGB16 buffer (index 0) at offset 0 and pitch 168.
+ALSA lib confmisc.c:768:(parse_card) cannot find card &#39;0&#39;
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1251:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:4738:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2239:(snd_pcm_open_noupdate) Unknown PCM default
+SDL DirectFB_SetVideoMode: 84x48@16, flags: 0x10000000
+(*) FBDev/Mode: Setting 84x48 RGB16
+(*) FBDev/Mode: Switched to 84x48 (virtual 84x48) at 16 bit (RGB16), pitch 168
+(*) FBDev/Surface: Allocated 84x48 16 bit RGB16 buffer (index 0) at offset 0 and pitch 168.
+(*) FBDev/Surface: Allocated 84x48 16 bit RGB16 buffer (index 0) at offset 0 and pitch 168.
+(!) DirectFB/core/vt: Unable to disallocate VT!
+    --&gt; Device or resource busy
+</pre></div>
+</div>
+<p>edit:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:~# cat .directfbrc
+no-vt-switch
+</pre></div>
+</div>
+<p>viewing key evens:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:~# python game.py
+commandline read: python
+commandline read: game.py
+
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~| DirectFB 1.2.10 |~~~~~~~~~~~~~~~~~~~~~~~~~~
+        (c) 2001-2008  The world wide DirectFB Open Source Community
+        (c) 2000-2004  Convergence (integrated media) GmbH
+      ----------------------------------------------------------------
+
+(*) DirectFB/Core: Single Application Core. (2014-10-21 10:21)
+(*) Direct/Thread: Started &#39;VT Switcher&#39; (-1) [CRITICAL OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) Direct/Thread: Started &#39;Keyboard Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: Keyboard 0.9 (directfb.org)
+(*) Direct/Thread: Started &#39;Linux Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: gpio_keys (1) 0.1 (directfb.org)
+(*) Direct/Thread: Started &#39;Linux Input&#39; (-1) [INPUT OTHER/OTHER 0/0] &lt;8388608&gt;...
+(*) DirectFB/Input: axp20x-pek (2) 0.1 (directfb.org)
+(*) DirectFB/Graphics: Generic Software Rasterizer 0.6 (directfb.org)
+(*) DirectFB/Core/WM: Default 0.3 (directfb.org)
+(*) FBDev/Surface: Allocated 84x48 16 bit RGB16 buffer (index 0) at offset 0 and pitch 168.
+ALSA lib confmisc.c:768:(parse_card) cannot find card &#39;0&#39;
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_card_driver returned error: No such file or directory
+ALSA lib confmisc.c:392:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1251:(snd_func_refer) error evaluating name
+ALSA lib conf.c:4259:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:4738:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2239:(snd_pcm_open_noupdate) Unknown PCM default
+SDL DirectFB_SetVideoMode: 84x48@16, flags: 0x10000000
+(*) FBDev/Mode: Setting 84x48 RGB16
+(*) FBDev/Mode: Switched to 84x48 (virtual 84x48) at 16 bit (RGB16), pitch 168
+(*) FBDev/Surface: Allocated 84x48 16 bit RGB16 buffer (index 0) at offset 0 and pitch 168.
+&lt;Event(2-KeyDown {&#39;scancode&#39;: 0, &#39;key&#39;: 0, &#39;unicode&#39;: u&#39;&#39;, &#39;mod&#39;: 0})&gt;
+&lt;Event(3-KeyUp {&#39;scancode&#39;: 0, &#39;key&#39;: 0, &#39;mod&#39;: 0})&gt;
+&lt;Event(2-KeyDown {&#39;scancode&#39;: 75, &#39;key&#39;: 278, &#39;unicode&#39;: u&#39;&#39;, &#39;mod&#39;: 0})&gt;
+&lt;Event(3-KeyUp {&#39;scancode&#39;: 75, &#39;key&#39;: 278, &#39;mod&#39;: 0})&gt;
+&lt;Event(2-KeyDown {&#39;scancode&#39;: 0, &#39;key&#39;: 0, &#39;unicode&#39;: u&#39;&#39;, &#39;mod&#39;: 0})&gt;
+&lt;Event(3-KeyUp {&#39;scancode&#39;: 0, &#39;key&#39;: 0, &#39;mod&#39;: 0})&gt;
+</pre></div>
+</div>
 </div>
 <div class="section" id="button-as-key-events">
 <h2>Button as key events<a class="headerlink" href="#button-as-key-events" title="Permalink to this headline">¶</a></h2>
 <p>TODO:
 We need to configure kernel to make the GPIO pins generate key evens (UEVENTS).</p>
+<p>Enable Even interface and GPIO button in the kernel</p>
+<p>device tree first:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>gpio_keys {
+        compatible = &quot;gpio-keys&quot;;
+        pinctrl-names = &quot;default&quot;;
+        pinctrl-0 = &lt;&amp;key_pins_shield&gt;;
+        #address-cells = &lt;1&gt;;
+        #size-cells = &lt;0&gt;;
+
+        button@0 {
+                label = &quot;Key Back&quot;;
+                linux,code = &lt;KEY_BACK&gt;;
+                gpios = &lt;&amp;pio 6 7 GPIO_ACTIVE_HIGH&gt;;
+        };
+
+        button@1 {
+                label = &quot;Key Home&quot;;
+                linux,code = &lt;KEY_HOME&gt;;
+                gpios = &lt;&amp;pio 6 8 GPIO_ACTIVE_HIGH&gt;;
+        };
+
+        button@2 {
+                label = &quot;Key Menu&quot;;
+                linux,code = &lt;KEY_MENU&gt;;
+                gpios = &lt;&amp;pio 6 9 GPIO_ACTIVE_HIGH&gt;;
+        };
+};
+</pre></div>
+</div>
+<p>resulted in:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:~# dmesg | grep gpio
+[    2.429051] gpio-keys gpio_keys: Unable to get irq number for GPIO 199, error -22
+[    2.436643] gpio-keys: probe of gpio_keys failed with error -22
+root@flasher-06:~#
+</pre></div>
+</div>
+<p>result:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:/sys/devices/platform/gpio_keys/of_node# ls -l
+total 0
+-r--r--r-- 1 root root  4 Jan  1 01:47 #address-cells
+drwxr-xr-x 2 root root  0 Jan  1 01:47 button@0
+drwxr-xr-x 2 root root  0 Jan  1 01:47 button@1
+drwxr-xr-x 2 root root  0 Jan  1 01:47 button@2
+-r--r--r-- 1 root root 15 Jan  1 01:47 compatible
+-r--r--r-- 1 root root 10 Jan  1 01:47 name
+-r--r--r-- 1 root root  4 Jan  1 01:47 pinctrl-0
+-r--r--r-- 1 root root  8 Jan  1 01:47 pinctrl-names
+-r--r--r-- 1 root root  4 Jan  1 01:47 #size-cells
+root@flasher-06:/sys/devices/platform/gpio_keys/of_node#
+</pre></div>
+</div>
+<p>enable gpio-keys-polled (in menu config) replace gpio-keys with gpio-keys-polled and
+added a poll-interval:</p>
+<p>[    1.839445] input: gpio_keys as /devices/platform/gpio_keys/input/input0
+[    1.847738] sunxi-rtc 1c20d00.rtc: rtc core: registered rtc-sunxi as rtc0
+[</p>
+<p>from <a class="reference external" href="http://stackoverflow.com/questions/11608454/frame-buffer-module-of-python">http://stackoverflow.com/questions/11608454/frame-buffer-module-of-python</a></p>
+<p>lower freq:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>spi-max-frequency = &lt;400000&gt;;
+</pre></div>
+</div>
+<p>change gamma:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:/sys/devices/platform/soc@01c00000/1c17000.spi/spi_master/spi32765/spi32765.1/graphics/fb0# pwd
+/sys/devices/platform/soc@01c00000/1c17000.spi/spi_master/spi32765/spi32765.1/graphics/fb0
+echo 25  &gt; /sys/devices/platform/soc@01c00000/1c17000.spi/spi_master/spi32765/spi32765.1/graphics/fb0/gamma
+</pre></div>
+</div>
+<p>Backlight:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://github.com/notro/fbtft/wiki/Backlight
+echo 1 &gt; /sys/class/backlight/*/bl_power
+</pre></div>
+</div>
+<p>tested using evtest:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:~# evtest /dev/input/event0
+Input driver version is 1.0.1
+Input device ID: bus 0x19 vendor 0x1 product 0x1 version 0x100
+Input device name: &quot;gpio_keys&quot;
+Supported events:
+  Event type 0 (EV_SYN)
+  Event type 1 (EV_KEY)
+    Event code 102 (KEY_HOME)
+    Event code 139 (KEY_MENU)
+    Event code 158 (KEY_BACK)
+Properties:
+Testing ... (interrupt to exit)
+Event: time 1262307768.536826, type 1 (EV_KEY), code 139 (KEY_MENU), value 1
+Event: time 1262307768.536826, -------------- EV_SYN ------------
+Event: time 1262307768.836842, type 1 (EV_KEY), code 139 (KEY_MENU), value 0
+Event: time 1262307768.836842, -------------- EV_SYN ------------
+Event: time 1262307770.036866, type 1 (EV_KEY), code 102 (KEY_HOME), value 1
+Event: time 1262307770.036866, -------------- EV_SYN ------------
+Event: time 1262307770.336814, type 1 (EV_KEY), code 102 (KEY_HOME), value 0
+Event: time 1262307770.336814, -------------- EV_SYN ------------
+Event: time 1262307771.836827, type 1 (EV_KEY), code 158 (KEY_BACK), value 1
+Event: time 1262307771.836827, -------------- EV_SYN ------------
+Event: time 1262307772.036816, type 1 (EV_KEY), code 158 (KEY_BACK), value 0
+Event: time 1262307772.036816, -------------- EV_SYN ------------
+</pre></div>
+</div>
+<p>Modify device tree:</p>
+<p>Test changed using evtest
+apt-get install evtest</p>
+<p>Looking arround:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>root@flasher-06:~# cat /proc/bus/input/devices
+I: Bus=0000 Vendor=0000 Product=0000 Version=0000
+N: Name=&quot;axp20x-pek&quot;
+P: Phys=m1kbd/input2
+S: Sysfs=/devices/platform/soc@01c00000/1c2ac00.i2c/i2c-0/0-0034/axp20x-pek/input/input0
+U: Uniq=
+H: Handlers=kbd event0
+B: PROP=0
+B: EV=3
+B: KEY=100000 0 0 0
+
+root@flasher-06:~# evtest /dev/input/event0
+Input driver version is 1.0.1
+Input device ID: bus 0x0 vendor 0x0 product 0x0 version 0x0
+Input device name: &quot;axp20x-pek&quot;
+Supported events:
+ Event type 0 (EV_SYN)
+ Event type 1 (EV_KEY)
+   Event code 116 (KEY_POWER)
+Properties:
+Testing ... (interrupt to exit)
+</pre></div>
+</div>
+<p>install pyton-edev</p>
 </div>
 </div>
 

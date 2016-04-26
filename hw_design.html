@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
-        <link rel="next" title="Software install" href="sw_install.html"/>
+        <link rel="next" title="Creating the case" href="hw_case.html"/>
         <link rel="prev" title="Hardware prototype and debug" href="hw_proto_and_debug.html"/> 
 
   
@@ -87,9 +87,12 @@
 <li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Hardware design</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#hardware-component-selection">Hardware component selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#software-tools">Software tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#odering-and-choosing-components">Odering and choosing components.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-tools">Software tools.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tasks">Tasks.</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="hw_case.html">Creating the case</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sw_drivers.html">Software drivers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
@@ -148,24 +151,31 @@ for 10 pieces and ended up only ordering 5 pieces.</p>
 <p>The PCB design was to be done using <a class="reference external" href="http://kicad-pcb.org/">KiCAD</a> and using the shield template
 that was offered by <a class="reference external" href="http://olimex.com/">Olimex</a> on their website/git repo</p>
 </div>
-<div class="section" id="software-tools">
-<h2>Software tools<a class="headerlink" href="#software-tools" title="Permalink to this headline">¶</a></h2>
-<p>The machine used during the design was a slightly oder laptop running ubuntu (LTS):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>keesj@e540:~/projects/A10-OLinuXino-LIME-5510-Shield-gh-pages$ lsb_release -a
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 14.04.4 LTS
-Release:        14.04
-Codename:       trusty
-</pre></div>
+<div class="section" id="odering-and-choosing-components">
+<h2>Odering and choosing components.<a class="headerlink" href="#odering-and-choosing-components" title="Permalink to this headline">¶</a></h2>
+<p>Until now we designed something with the components we where able to find but we did not have enough
+for out own project. With 3d printing</p>
 </div>
-<p>and I installed KiCAD from the PPA (the KiCAD version in ubuntu is outdated)</p>
-<dl class="docutils">
-<dt>/etc/apt/sources.list.d/js-reynaud-kicad-4-trusty.list::</dt>
-<dd>deb <a class="reference external" href="http://ppa.launchpad.net/js-reynaud/kicad-4/ubuntu">http://ppa.launchpad.net/js-reynaud/kicad-4/ubuntu</a> trusty main</dd>
-</dl>
-<p>And the version can be seen here</p>
+<div class="section" id="software-tools">
+<h2>Software tools.<a class="headerlink" href="#software-tools" title="Permalink to this headline">¶</a></h2>
+<p>The machine used during the design was a slightly oder laptop running ubuntu (LTS) (10.04)
+and I installed KiCAD from the PPA (the KiCAD version in ubuntu is outdated) the version can be seen here</p>
 <img alt="_images/kicad_version.png" src="_images/kicad_version.png" />
+<p>KiCAD development goes quite fast and in general things improve for the better. On problem I encountered
+an other project is that KiCAD is not always very backward compatible this can be quite a challenge when
+Using other people&#8217;s code as I did for the shield. This time I was lucky.</p>
+<p>The flow of KiCAD and finding out where options and path need to be configured remains a constant quest
+but you need to at least do the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Use the library wizard to download files from the KiCAD github pages (the new library format with directory names that end with .pretty)</li>
+<li>Configure library path AND add libraries to your project to make it complete</li>
+<li>Possibly convert old libraries to the new format</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tasks">
+<h2>Tasks.<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -176,7 +186,7 @@ Codename:       trusty
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sw_install.html" class="btn btn-neutral float-right" title="Software install" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="hw_case.html" class="btn btn-neutral float-right" title="Creating the case" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="hw_proto_and_debug.html" class="btn btn-neutral" title="Hardware prototype and debug" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
