@@ -28,6 +28,9 @@ fixing the problem was really easy::
 .. _bmpfont: http://www.pygame.org/pcr/bitmap_font/index.php
 .. _fine: http://hea-www.harvard.edu/~fine/Tech/x11fonts.html
 
+Hello world
+-----------
+
 The first Thing I wanted was to display the IP address of the machine and be able to update
 the screen the following code is like the first work in progress UI(only one game state)::
 
