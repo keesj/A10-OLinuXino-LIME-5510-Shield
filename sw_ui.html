@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Software ui &mdash; A10-OLinuXino-LIME-5510-Shield 0.4 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="A10-OLinuXino-LIME-5510-Shield 0.4 documentation" href="index.html"/>
+        <link rel="next" title="Project Wrapup" href="project_wrapup.html"/>
+        <link rel="prev" title="Software drivers" href="sw_drivers.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> A10-OLinuXino-LIME-5510-Shield
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_board.html">Hardware selection Board</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_selection_ui.html">Hardware selection UI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_design.html">Hardware design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hw_case.html">Creating the case</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_drivers.html">Software drivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Software ui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#small-fonts">Small fonts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-rid-of-the-cursor-in-directfb">Getting rid of the cursor in directfb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hello-world">Hello world</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">A10-OLinuXino-LIME-5510-Shield</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Software ui</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/sw_ui.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="software-ui">
+<h1>Software ui<a class="headerlink" href="#software-ui" title="Permalink to this headline">¶</a></h1>
+<p>After some more hacking the framebuffer was ready and it was time to create
+a simple UI. I have choosen the pygame framework and found a nice way of displaying
+content on the screen.</p>
+<img alt="_images/ui_ip_address.jpg" src="_images/ui_ip_address.jpg" />
+<div class="section" id="small-fonts">
+<h2>Small fonts<a class="headerlink" href="#small-fonts" title="Permalink to this headline">¶</a></h2>
+<p>Given the small size of the display I had to find a small font to fit on the screen. After messing arround
+with <a class="reference external" href="http://www.pygame.org/pcr/bitmap_font/index.php">bmpfont</a> I found that <a class="reference external" href="http://hea-www.harvard.edu/~fine/Tech/x11fonts.html">fine</a> had a nice font in the bdf format supported by pygame through freetype.</p>
+</div>
+<div class="section" id="getting-rid-of-the-cursor-in-directfb">
+<h2>Getting rid of the cursor in directfb<a class="headerlink" href="#getting-rid-of-the-cursor-in-directfb" title="Permalink to this headline">¶</a></h2>
+<p>Given my previous edit of the directfbrc I expected no curstor to be visible. It turns out pygame
+was displaying a curstor on my small screen.</p>
+<p>fixing the problem was really easy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hello-world">
+<h2>Hello world<a class="headerlink" href="#hello-world" title="Permalink to this headline">¶</a></h2>
+<p>The first Thing I wanted was to display the IP address of the machine and be able to update
+the screen the following code is like the first work in progress UI(only one game state):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UI</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">84</span><span class="p">,</span> <span class="mi">48</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="n">font_file</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;assets/atari-small.bdf&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">Font</span><span class="p">(</span><span class="n">font_file</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip_count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip_status</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+
+
+        <span class="k">def</span> <span class="nf">mainUiLoop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+                <span class="c1">#</span>
+                <span class="c1"># Premature optimization is the root of all evil</span>
+                <span class="c1">#</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_count</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">is_up</span><span class="p">(</span><span class="s1">&#39;eth0&#39;</span><span class="p">)):</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">ip_status</span> <span class="o">=</span> <span class="s2">&quot;ip: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">get_ip_address</span><span class="p">(</span><span class="s1">&#39;eth0&#39;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">ip_status</span> <span class="o">=</span> <span class="s2">&quot;ip: Not connected&quot;</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">ip_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ip_count</span> <span class="o">+</span><span class="mi">1</span>
+
+                <span class="n">txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip_status</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">txt</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+                <span class="n">txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">txt</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="kn">import</span> <span class="nn">pygame</span>
+        <span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">LoopingCall</span>
+        <span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="kn">import</span> <span class="n">reactor</span>
+        <span class="kn">import</span> <span class="nn">datetime</span>
+
+        <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+        <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Haha n33b you are running as root&quot;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;echo 1 &gt; /sys/class/backlight/fb_pcd8544/bl_power&quot;</span><span class="p">)</span>
+
+        <span class="n">ui</span> <span class="o">=</span> <span class="n">UI</span><span class="p">()</span>
+        <span class="n">tick</span> <span class="o">=</span> <span class="n">LoopingCall</span><span class="p">(</span><span class="n">ui</span><span class="o">.</span><span class="n">mainUiLoop</span><span class="p">)</span>
+        <span class="n">tick</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">reactor</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="project_wrapup.html" class="btn btn-neutral float-right" title="Project Wrapup" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sw_drivers.html" class="btn btn-neutral" title="Software drivers" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Kees Jongenburger.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

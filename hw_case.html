@@ -87,11 +87,15 @@
 <li class="toctree-l1"><a class="reference internal" href="hw_proto_and_debug.html">Hardware prototype and debug</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hw_design.html">Hardware design</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Creating the case</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-design-for-laser-cutting">Creating a design for laser cutting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-laser-cut-design-using-freecad">Creating a laser cut design using freecad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#edit-using-inkscape">Edit using inkscape</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tools">Tools</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sw_install.html">Software install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sw_drivers.html">Software drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sw_ui.html">Software ui</a></li>
 <li class="toctree-l1"><a class="reference internal" href="project_wrapup.html">Project Wrapup</a></li>
 </ul>
 
@@ -139,9 +143,40 @@
             
   <div class="section" id="creating-the-case">
 <h1>Creating the case<a class="headerlink" href="#creating-the-case" title="Permalink to this headline">¶</a></h1>
-<p>For the initial week-end project I used a drill and a saw to create the initial case.
-The result was sub optimal and not scalable. Having done 3d printing before I also did not want
-to 3d print many pieces. I settled for lasercutting.</p>
+<p>For the initial week-end project I used a drill and a saw to create the initial
+case.  The result was sub optimal and not scalable. Having done 3d printing
+before I also did not want to 3d print many pieces. I settled for lasercutting.</p>
+<div class="section" id="creating-a-design-for-laser-cutting">
+<h2>Creating a design for laser cutting<a class="headerlink" href="#creating-a-design-for-laser-cutting" title="Permalink to this headline">¶</a></h2>
+<p>As the design of the lcd display was already done using openscad it seamed like
+the logical choice to also use openscad to create lines for creating the laser
+cut.</p>
+<img alt="_images/openscad.png" src="_images/openscad.png" />
+<p>In the end this was the result with the smallest effort. Design using 3d primitives
+and use the projection method (and save as dxf to get it in an other program)</p>
+</div>
+<div class="section" id="creating-a-laser-cut-design-using-freecad">
+<h2>Creating a laser cut design using freecad<a class="headerlink" href="#creating-a-laser-cut-design-using-freecad" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/freecad_test.png" src="_images/freecad_test.png" />
+<p>I also tried using Freecad to export dxf files but it was really cumbersome and
+I did not find a proper way of doing it.</p>
+<p>An other approach I tried and that worked was to export the design as a stl file
+and after that do a cut using freecad problem I had with the export</p>
+<p>Creating a projection based on a stl file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>projection()
+import(&quot;/home/keesj/pcb.stl&quot;);
+</pre></div>
+</div>
+</div>
+<div class="section" id="edit-using-inkscape">
+<h2>Edit using inkscape<a class="headerlink" href="#edit-using-inkscape" title="Permalink to this headline">¶</a></h2>
+<p>While the tools above allow to create a shape suitable for laser cutting there still are some problems.
+First of all all the lines have the same color and laser cut programs often will use color coding to
+determine how to convert the lines into a flow and determine the operation to perform (cutting or engraving).</p>
+<p>I needed a reference point to be able to position the laser and thus needed different colors. There are a few tools
+available (qcad being one of them) the have support for doing this kind of thing but inkscape is also very well suited
+for this task.</p>
+</div>
 <div class="section" id="tools">
 <h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/jepler/linuxcnc-rosh-laser">https://github.com/jepler/linuxcnc-rosh-laser</a>

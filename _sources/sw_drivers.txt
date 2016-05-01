@@ -257,6 +257,8 @@ edit::
 
 	root@flasher-06:~# cat .directfbrc 
 	no-vt-switch 
+	no-cursor
+
 
 
 viewing key evens::

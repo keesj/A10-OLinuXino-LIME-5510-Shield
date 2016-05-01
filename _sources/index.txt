@@ -26,6 +26,7 @@ Contents:
    hw_case 
    sw_install
    sw_drivers
+   sw_ui
    project_wrapup
 
 
