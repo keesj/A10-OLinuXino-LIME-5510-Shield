@@ -737,6 +737,7 @@ flasher.service::
 	After=network.target sync.service
 
 	[Service]
+	Environment=SDL_VIDEODRIVER=directfb
 	ExecStart=/usr/bin/python flasher
 	WorkingDirectory=/root/flasher
 	Restart=always

@@ -21,7 +21,7 @@ and use the projection method (and save as dxf to get it in an other program)
 
 
 Creating a laser cut design using freecad
-----------------------------------------
+-----------------------------------------
 
 .. image:: images/case/freecad_test.png
 
