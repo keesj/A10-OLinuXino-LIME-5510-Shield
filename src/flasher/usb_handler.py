@@ -7,20 +7,28 @@ import logging
 
 import flash_handler
 
+
 from twisted.internet import reactor
 
 def msg(str):
 	logging.info("%s:%s" %(datetime.date.today() ,str))
-#	call(["../lcd/a.out",str])
 
+f = None
+def setF(ff):
+	global f
+	f  = ff
+
+def doWrite(message):
+	f.write(message)
 
 mf = None
 
 def start_flash(dev):                  
 	global mf
 	msg("Flashing device")
-	mf = flash_handler.MyFlasher("./data/flash.sh -s %s" % dev.serial)
-	reactor.spawnProcess(mf,"./data/flash.sh",["flash","%s" % dev.serial],{})
+	doWrite("Flashing %s" % dev.serial)
+	mf = flash_handler.MyFlasher("./flash.sh -s %s" % dev.serial)
+	reactor.spawnProcess(mf,"./flash.sh",["flash","%s" % dev.serial],{})
 #	ret = call(["fastboot","update", "-w" , "/root/FP2-gms36-1.1.7-img.zip"])
 
 def add_device(dev):

@@ -31,7 +31,10 @@ class UI:
 		self.background.fill((0, 0, 0))
 		self.ip_count = 0
 		self.ip_status = "Unknown"
+		self.status = "initial"
 
+	def write(self, message):
+		self.status = message
 
 	def mainUiLoop(self):
 		self.screen.blit(self.background, (0, 0))
@@ -53,26 +56,23 @@ class UI:
 		msg = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 		txt = self.font.render(msg, True, (255,255,255))
 		self.screen.blit(txt,(0,9))
+		status_msg = self.font.render(self.status, True, (255,255,255))
+		self.screen.blit(status_msg,(0,18))
+		status_msg = self.font.render(self.status, True, (255,255,255))
 		pygame.display.flip()
 
 
-if __name__ == "__main__":
-	import os
-	import pygame
-	from twisted.internet.task import LoopingCall
-	from twisted.internet import reactor
-	import datetime
+import os
+import pygame
+from twisted.internet.task import LoopingCall
+from twisted.internet import reactor
+import datetime
 
-	from subprocess import call
-	from pygame.locals import *
+from subprocess import call
+from pygame.locals import *
 
 	
-	if os.getuid() == 0:
-		print ("Haha n33b you are running as root")
-		os.system("echo 1 > /sys/class/backlight/fb_pcd8544/bl_power")
+if os.getuid() == 0:
+	print ("Haha n33b you are running as root")
+	os.system("echo 1 > /sys/class/backlight/fb_pcd8544/bl_power")
 
-	ui = UI()
-	tick = LoopingCall(ui.mainUiLoop)
-	tick.start(1.0 / 5)
-	
-	reactor.run()

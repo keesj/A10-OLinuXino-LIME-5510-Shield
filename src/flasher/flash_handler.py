@@ -4,6 +4,15 @@ from twisted.internet.task import LoopingCall
 import re
 import logging
 
+
+f = None
+
+def setF(ff):
+	global f
+	f = ff
+def doWrite(message):
+	f.write(message)
+
 class MyFlasher(protocol.ProcessProtocol):
     def __init__(self, command):
         self.command = command
@@ -39,6 +48,11 @@ class MyFlasher(protocol.ProcessProtocol):
     def processEnded(self, reason):
         self.logger.info("processEnded, status %d" % (reason.value.exitCode))
 	self.is_done = 1
+	if reason.value.exitCode != 0:
+		doWrite("Flashing Error!(%d)" % (reason.value.exitCode))
+	else:
+		doWrite("Flashing done")
+
         #reactor.stop()
 
 #pp = MyFlasher("./flash.sh")
